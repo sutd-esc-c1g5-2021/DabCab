@@ -3,4 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_history">History</string>
     <string name="title_declaration">Declaration</string>
+    <string name="title_log">Log</string>
+    <string name="title_in">In</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_button">Log In</string>
 </resources>
