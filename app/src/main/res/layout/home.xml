@@ -6,7 +6,8 @@
     android:layout_height="fill_parent"
     android:background="#E5E5E5"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".homeActivity">
+
 
     <RelativeLayout
         android:id="@+id/topIcons"
@@ -324,4 +325,6 @@
             </FrameLayout>
         </LinearLayout>
     </HorizontalScrollView>
+
+
 </LinearLayout>

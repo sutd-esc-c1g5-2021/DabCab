@@ -21,6 +21,15 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class SUTD_TTS {
+    private static SUTD_TTS sutd_tts = null;
+
+    public static SUTD_TTS getSutd_tts() {
+        if (sutd_tts == null) {
+            sutd_tts = new SUTD_TTS();
+        }
+        return sutd_tts;
+    }
+
     String user_id, user_password;
     Map<String, String> cookies;
 
@@ -31,6 +40,7 @@ public class SUTD_TTS {
         this.user_password = user_password;
 
     }
+
     public boolean attemptTemperatureDeclaration(String temperature) {
         try {
 
@@ -123,6 +133,10 @@ public class SUTD_TTS {
         }
 
 
+    }
+
+    public boolean attemptFetchProfile() {
+        return true;
     }
 
     public boolean attemptLogin() {

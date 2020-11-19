@@ -81,5 +81,19 @@
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
+    <Button
+        android:id="@+id/fake_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="65dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="65dp"
+        android:background="@drawable/round_button"
+        android:text="Fake Login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
 
 </LinearLayout>

@@ -19,8 +19,8 @@ public class LoginPageActivity extends AppCompatActivity {
     TextView title_log;
     TextView title_in;
     Button login_button;
+    Button fake_login_button;
 
-    public static SUTD_TTS sutd_tts;
     private static String TAG = LoginPageActivity.class.toString();
 
     @Override
@@ -33,15 +33,14 @@ public class LoginPageActivity extends AppCompatActivity {
         title_log = findViewById(R.id.title_log);
         title_in = findViewById(R.id.title_in);
         login_button = findViewById(R.id.login_button);
+        fake_login_button = findViewById(R.id.fake_login);
 
         try{
             this.getSupportActionBar().hide();
         } catch (NullPointerException ex){ }
 
 
-        if (sutd_tts == null) {
-            sutd_tts = new SUTD_TTS();
-        }
+        SUTD_TTS sutd_tts = SUTD_TTS.getSutd_tts();
 
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +72,16 @@ public class LoginPageActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        fake_login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Simulated login");
+                Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
