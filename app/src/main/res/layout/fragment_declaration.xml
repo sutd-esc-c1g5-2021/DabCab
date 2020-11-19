@@ -53,6 +53,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/declaration_circle0"
                             android:background="@drawable/declaration_circle0"
                             android:text="@string/zero_percent"
                             android:textAlignment="center"
@@ -127,6 +128,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/temp_declaration_circle1"
                             android:background="@drawable/declaration_circle1"
                             android:text="0%"
                             android:textAlignment="center"
@@ -202,6 +204,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/temp_declaration_circle2"
                             android:background="@drawable/declaration_circle1"
                             android:text="0%"
                             android:textAlignment="center"

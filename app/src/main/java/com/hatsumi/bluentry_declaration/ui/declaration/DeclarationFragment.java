@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hatsumi.bluentry_declaration.AndroidUtils;
-import com.hatsumi.bluentry_declaration.LoginPageActivity;
-import com.hatsumi.bluentry_declaration.MainActivity;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.TTSWebActivity;
@@ -39,11 +36,13 @@ public class DeclarationFragment extends Fragment {
 
     private static String TAG = DeclarationFragment.class.toString();
 
+    private static SUTD_TTS tts;
 
     CardView daily_card_view, morning_card_view, evening_card_view;
     View progressOverlay;
 
-    Button log_daily_declaration, log_temperature_button1;
+    TextView percentage_temp_1, percentage_temp_2;
+    Button log_daily_declaration, log_temperature_button1, log_temperature_button2;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +69,7 @@ public class DeclarationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tts = SUTD_TTS.getSutd_tts();
 
         swipeRefreshLayout = getView().findViewById(R.id.declaration_pull_to_refresh);
         daily_card_view = getView().findViewById(R.id.daily_declaration_card_view);
@@ -77,12 +77,14 @@ public class DeclarationFragment extends Fragment {
         evening_card_view = getView().findViewById(R.id.evening_card_view);
         log_daily_declaration = getView().findViewById(R.id.log_daily_button);
         log_temperature_button1 = getView().findViewById(R.id.log_temperature_button1);
+        log_temperature_button2 = getView().findViewById(R.id.log_temperature_button2);
+
+        percentage_temp_1 = getView().findViewById(R.id.temp_declaration_circle1);
+        percentage_temp_2 = getView().findViewById(R.id.temp_declaration_circle2);
 
         progressOverlay = getView().findViewById(R.id.progress_overlay);
 
-
-        // Check if the daily declaration is completed
-
+        updateTTSData();
 
         log_temperature_button1.setOnClickListener(new View.OnClickListener() {
 
@@ -96,8 +98,7 @@ public class DeclarationFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //Simulate the refreshing takes 5 seconds
-
-
+                updateTTSData();
             }
         });
 
@@ -108,6 +109,7 @@ public class DeclarationFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "Performing declaration for temperature (1)");
                 Intent intent = new Intent(getActivity(), TTSWebActivity.class);
+                intent.putExtra("declaration", "daily");
                 startActivity(intent);
             }
         });
@@ -125,17 +127,22 @@ public class DeclarationFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    SUTD_TTS tts = SUTD_TTS.getSutd_tts();
-                    if (tts.hasCompletedDeclaration()) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                log_temperature_button1.setVisibility(View.GONE);
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
-                        });
-                    }
+                    final int declarationCount = tts.completedTempDeclarationCount();
+                    Log.d(TAG, "Declaration count " + declarationCount);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (declarationCount >= 2) {
+                                log_temperature_button2.setVisibility(View.GONE);
+                                percentage_temp_2.setText("100%"); //TODO: use strings.xml
 
+                            }
+                            if (declarationCount > 1) {
+                                log_temperature_button1.setVisibility(View.GONE);
+                                percentage_temp_1.setText("100%");
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -174,7 +181,7 @@ public class DeclarationFragment extends Fragment {
     }
 
     private void performTemperatureDeclaration(String temperature) {
-        SUTD_TTS tts = SUTD_TTS.getSutd_tts();
+
         AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
         AsyncTask.execute(new Runnable() {
             @Override

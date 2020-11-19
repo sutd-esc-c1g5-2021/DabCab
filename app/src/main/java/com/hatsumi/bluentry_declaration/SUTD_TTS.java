@@ -112,7 +112,17 @@ public class SUTD_TTS {
         }
     }
 
-    public boolean hasCompletedDeclaration() {
+    public String getCookieString() {
+        String output = "";
+        for (Map.Entry<String, String> entry: this.cookies.entrySet()) {
+            output += entry.getKey() + "=" + entry.getValue() + "; ";
+        }
+        output += "path=/";
+
+        return output;
+    }
+
+    public int completedTempDeclarationCount() {
         try {
             Connection.Response response = Jsoup.connect("https://tts.sutd.edu.sg/tt_temperature_taking_user.aspx")
                     .cookies(this.cookies).sslSocketFactory(socketFactory()).method(Connection.Method.GET).execute();
@@ -120,16 +130,12 @@ public class SUTD_TTS {
             Log.d(TAG, response.body());
 
             Document temp_history = response.parse();
-            Element edit_href = temp_history.select("a[href^=\"tt_temperature_taking_user.aspx\"]").first();
-            if (edit_href != null) {
-                return true;
-            }
-            return false;
+            return temp_history.select("a[href^=\"tt_temperature_taking_user.aspx\"]").size();
 
         }
         catch (Exception e) {
             Log.d(TAG, "Encountered unexpected error " + e.toString());
-            return false;
+            return 0;
         }
 
 

@@ -51,6 +51,7 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("key", "here");
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
 
                 AsyncTask.execute(new Runnable() {
                     @Override
@@ -61,11 +62,14 @@ public class LoginPageActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
                                 if (result) {
                                     Log.d(TAG, "Success in UI thread");
                                     Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
                                     startActivity(intent);
+                                    LoginPageActivity.this.finish();
                                 }
                                 else {
                                     Log.d(TAG, "Fail in UI Thread");
