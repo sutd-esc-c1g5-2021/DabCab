@@ -2,10 +2,18 @@
     <string name="app_name">BluEntry-Declaration</string>
     <string name="title_home">Home</string>
     <string name="title_history">History</string>
-    <string name="title_declaration">Declaration</string>
     <string name="title_log">Log</string>
     <string name="title_in">In</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login_button">Log In</string>
+    <!--Used in Declaration Page -->
+    <string name="title_declaration">Declarations</string>
+    <string name="zero_percent">0%</string>
+    <string name="daily_declaration">Daily Declaration</string>
+    <string name="reminder_1">Reminder at 10 AM</string>
+    <string name="temperature_taking">Temperature Taking</string>
+    <string name="morning">Morning</string>
+    <string name="evening">Evening</string>
+    <string name="LOG">LOG</string>
 </resources>

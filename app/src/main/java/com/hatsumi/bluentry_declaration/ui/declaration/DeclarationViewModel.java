@@ -10,7 +10,7 @@ public class DeclarationViewModel extends ViewModel {
 
     public DeclarationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("Declaration");
     }
 
     public LiveData<String> getText() {
