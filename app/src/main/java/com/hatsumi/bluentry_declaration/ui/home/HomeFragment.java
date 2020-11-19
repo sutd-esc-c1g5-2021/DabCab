@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (bluetoothAdapter == null) {
-            Log.d(TAG, "Bluetooth not supported");
+            //Log.d(TAG, "Bluetooth not supported");
             bluetoothStatus.setText("Bluetooth not supported"); //TODO put into strings.xml
         }
 

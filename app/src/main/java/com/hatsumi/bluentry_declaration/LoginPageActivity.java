@@ -21,6 +21,9 @@ public class LoginPageActivity extends AppCompatActivity {
     Button login_button;
     Button fake_login_button;
 
+
+    View progressOverlay;
+
     private static String TAG = LoginPageActivity.class.toString();
 
     @Override
@@ -34,6 +37,8 @@ public class LoginPageActivity extends AppCompatActivity {
         title_in = findViewById(R.id.title_in);
         login_button = findViewById(R.id.login_button);
         fake_login_button = findViewById(R.id.fake_login);
+
+        progressOverlay = findViewById(R.id.progress_overlay);
 
         try{
             this.getSupportActionBar().hide();
@@ -79,9 +84,32 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
-                Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
-                startActivity(intent);
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+                AsyncTask.execute(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          try {
+                                              Thread.sleep(5000);
+                                              Log.d(TAG, "Sleep in background task complete");
+
+                                              runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                      AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
+                                                      Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                                      Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
+                                                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
+                                                      startActivity(intent);
+                                                      LoginPageActivity.this.finish();
+                                                  }
+                                              });
+                                          } catch (InterruptedException e) {
+                                              e.printStackTrace();
+                                          }
+
+                                      }
+                                  });
+
             }
         });
 

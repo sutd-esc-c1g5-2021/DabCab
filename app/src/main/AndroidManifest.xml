@@ -25,6 +25,11 @@
             android:parentActivityName=".LoginPageActivity">
 
         </activity>
+        <activity
+            android:name=".TTSWebActivity"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
 
 
         <meta-data
