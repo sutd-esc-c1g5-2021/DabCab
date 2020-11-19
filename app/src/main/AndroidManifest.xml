@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".LoginPage">
+        <activity android:name=".LoginPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".LoginPage">
+            android:parentActivityName=".LoginPageActivity">
 
         </activity>
 

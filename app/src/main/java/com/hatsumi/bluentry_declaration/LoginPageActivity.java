@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginPage extends AppCompatActivity {
+public class LoginPageActivity extends AppCompatActivity {
 
     EditText password;
     EditText username;
@@ -21,7 +21,7 @@ public class LoginPage extends AppCompatActivity {
     Button login_button;
 
     public static SUTD_TTS sutd_tts;
-    private static String TAG = com.hatsumi.bluentry_declaration.LoginPage.class.toString();
+    private static String TAG = LoginPageActivity.class.toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,13 @@ public class LoginPage extends AppCompatActivity {
                             public void run() {
                                 if (result) {
                                     Log.d(TAG, "Success in UI thread");
-                                    Toast.makeText(LoginPage.this, "Login Successful", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                                    Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 else {
                                     Log.d(TAG, "Fail in UI Thread");
-                                    Toast.makeText(LoginPage.this, "Invalid", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginPageActivity.this, "Invalid", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
