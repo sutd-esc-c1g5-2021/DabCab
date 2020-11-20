@@ -19,8 +19,11 @@ public class LoginPageActivity extends AppCompatActivity {
     TextView title_log;
     TextView title_in;
     Button login_button;
+    Button fake_login_button;
 
-    public static SUTD_TTS sutd_tts;
+
+    View progressOverlay;
+
     private static String TAG = LoginPageActivity.class.toString();
 
     @Override
@@ -33,20 +36,22 @@ public class LoginPageActivity extends AppCompatActivity {
         title_log = findViewById(R.id.title_log);
         title_in = findViewById(R.id.title_in);
         login_button = findViewById(R.id.login_button);
+        fake_login_button = findViewById(R.id.fake_login);
+
+        progressOverlay = findViewById(R.id.progress_overlay);
 
         try{
             this.getSupportActionBar().hide();
         } catch (NullPointerException ex){ }
 
 
-        if (sutd_tts == null) {
-            sutd_tts = new SUTD_TTS();
-        }
+        SUTD_TTS sutd_tts = SUTD_TTS.getSutd_tts();
 
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("key", "here");
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
 
                 AsyncTask.execute(new Runnable() {
                     @Override
@@ -57,11 +62,14 @@ public class LoginPageActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
                                 if (result) {
                                     Log.d(TAG, "Success in UI thread");
                                     Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
                                     startActivity(intent);
+                                    LoginPageActivity.this.finish();
                                 }
                                 else {
                                     Log.d(TAG, "Fail in UI Thread");
@@ -72,6 +80,39 @@ public class LoginPageActivity extends AppCompatActivity {
 
                     }
                 });
+
+            }
+        });
+
+        fake_login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Simulated login");
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+                AsyncTask.execute(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          try {
+                                              Thread.sleep(5000);
+                                              Log.d(TAG, "Sleep in background task complete");
+
+                                              runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                      AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
+                                                      Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                                      Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
+                                                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
+                                                      startActivity(intent);
+                                                      LoginPageActivity.this.finish();
+                                                  }
+                                              });
+                                          } catch (InterruptedException e) {
+                                              e.printStackTrace();
+                                          }
+
+                                      }
+                                  });
 
             }
         });
