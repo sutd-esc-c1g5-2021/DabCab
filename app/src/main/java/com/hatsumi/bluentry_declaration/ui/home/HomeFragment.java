@@ -25,11 +25,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.hatsumi.bluentry_declaration.R;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.toString();
 
     //private HomeViewModel homeViewModel;
+
+    static boolean active = false;
 
     public final static String LOC_KEY = "LOC_KEY";
     private final static int BLUETOOTH_PERMISSION_CODE = 100;
@@ -56,7 +59,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        location_1_count = getView().findViewById(R.id.location_1_count);
+        location_1_count = Objects.requireNonNull(getView()).findViewById(R.id.location_1_count);
         bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
 
         ArrayList<TextView> locationText = new ArrayList<>();
@@ -97,6 +100,7 @@ public class HomeFragment extends Fragment {
         //userName.setText("me");
 
 
+        active = true;
         updateBluetoothStatus();
         bluetoothStatus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,9 +157,9 @@ public class HomeFragment extends Fragment {
 
 
     public void checkPermission(String permission, int requestCode) {
-        if (ContextCompat.checkSelfPermission(getContext(), permission) == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), permission) == PackageManager.PERMISSION_DENIED) {
             // Requesting the permission
-            ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{permission}, requestCode);
         }
     }
 
@@ -165,21 +169,18 @@ public class HomeFragment extends Fragment {
         if (bluetoothAdapter == null) {
             //Log.d(TAG, "Bluetooth not supported");
             bluetoothStatus.setText("Bluetooth not supported"); //TODO put into strings.xml
-        }
-
-        else if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothDenied);
-        }
-        else if (!bluetoothAdapter.isEnabled()){
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else if (!bluetoothAdapter.isEnabled()) {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothOff);
-        }
-        else {
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothConnected);
         }
-        refresh(1000);              //update bluetooth status every sec
+
+        refresh(1000);          //update bluetooth status every sec
     }
 
     private void refresh(int milliseconds){
@@ -187,7 +188,9 @@ public class HomeFragment extends Fragment {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                if (active){
                 updateBluetoothStatus();
+                }
             }
         };
         handler.postDelayed(runnable, milliseconds);
@@ -210,6 +213,26 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;*/
+    }
 
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        active = false;
+//        Log.i(TAG, "onStop");
+//    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        active = false;
+        Log.i(TAG,"onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        active = true;
+        updateBluetoothStatus();
+        Log.i(TAG,"onResume");
     }
 }
