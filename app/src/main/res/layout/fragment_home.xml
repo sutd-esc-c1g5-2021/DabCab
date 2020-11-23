@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#E5E5E5"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
@@ -37,7 +36,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="15dp"
-            android:background="#E5E5E5"
+            android:background="#FBFBFB"
             android:src="@drawable/ic_baseline_notifications_none_24" />
         <TextView
             android:id="@+id/badge_notification"
