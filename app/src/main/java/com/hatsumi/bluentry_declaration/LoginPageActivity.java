@@ -48,6 +48,7 @@ public class LoginPageActivity extends AppCompatActivity {
         ServiceCaller(intent);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
 
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);

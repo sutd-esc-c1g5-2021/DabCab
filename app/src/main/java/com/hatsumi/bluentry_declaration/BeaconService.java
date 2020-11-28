@@ -19,6 +19,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,7 +34,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**Both RX and RSSI (Received Signal Strength Indication) are indications of the power level being received
  * by an antenna
@@ -60,6 +64,7 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
     }
 
     private NotificationCompat.Builder notificationBuilder;
+    private Notification notification;
 
     private static final String NOTIFICATION_CHANNEL_ID = "com.hatsumi.beaconservice";
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -72,9 +77,8 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
         manager.createNotificationChannel(chan);
-
         notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        Notification notification = notificationBuilder.setOngoing(true)
+        notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.bluetooth_rounded_corner)
                 .setContentTitle("App is running in background")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
@@ -84,6 +88,15 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
     }
 
 
+    private void showBluetoothError() {
+        Log.d(TAG, "Error with Bluetooth");
+
+        NotificationManager mNotificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationBuilder.setContentTitle("Oh no! BluEntry is not working well");
+        notificationBuilder.setContentText("Please turn on your Bluetooth");
+        mNotificationManager.notify(2, notificationBuilder.build());
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -92,12 +105,14 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
 
         if (!isBluetoothSupported()) {
             Log.d(TAG, "Bluetooth not supported");
-            stopSelf();
+            showBluetoothError();
+            //stopSelf();
         }else{
             if(mBluetoothAdapter!=null && mBluetoothAdapter.isEnabled()){
                 startBLEscan();
             }else{
-                stopSelf();
+                showBluetoothError();
+                //stopSelf();
             }
         }
         return START_STICKY;
@@ -141,7 +156,11 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
     }
 
     public void startBLEscan(){
+        Log.d(TAG, "Start BLE scan");
+
         mBluetoothAdapter.startLeScan(this);
+
+
     }
 
     public void stopBLEscan(){
@@ -171,13 +190,56 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         }
     }
 
+    private ArrayList<String> discoveredMacs = new ArrayList<String>();
+
     @Override
     public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
         if(device!=null && device.getName()!=null){
-            //Log.d(TAG + " onLeScan: ", "Name: "+device.getName() + "Address: "+device.getAddress()+ "RSSI: "+rssi);
+            Log.d(TAG + " onLeScan: ", "Name: "+device.getName() + "Address: "+device.getAddress()+ "RSSI: "+rssi);
             if(rssi > -90 && rssi <-1){
-                writeLine("Automate service BLE device in range: "+ device.getName()+ " "+rssi);
-                if (device.getName().equalsIgnoreCase("NCS_Beacon") || device.getName().equalsIgnoreCase("estimote")) {
+
+                if (device.getName().equalsIgnoreCase("BLE_NFC")) {
+                    writeLine("Automate service BLE device in range: "+ device.getName()+ " "+rssi);
+                    if (!discoveredMacs.contains(device.getAddress())) {
+                        Log.d(TAG, "New device!");
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                                PendingIntent.FLAG_ONE_SHOT);
+                        String channelId = "com.hatsumi.swag";
+                        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        NotificationCompat.Builder notificationBuilder =
+                                new NotificationCompat.Builder(this, channelId)
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setContentTitle("BluEntry Check In")
+                                        .setContentText("You have checked into")
+                                        .setAutoCancel(true)
+                                        .setSound(defaultSoundUri)
+                                        .setStyle(new NotificationCompat.BigTextStyle()
+                                                .bigText("You have checked into location"))
+                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                        .setContentIntent(pendingIntent);
+
+                        NotificationManager notificationManager =
+                                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                        try{
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                NotificationChannel channel = new NotificationChannel(channelId,
+                                        "com.hatsumi.channel",
+                                        NotificationManager.IMPORTANCE_HIGH);
+                                notificationManager.createNotificationChannel(channel);
+                            }
+                            Random rand = new Random();
+                            notificationManager.notify(rand.nextInt(10000) /* ID of notification */, notificationBuilder.build());
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        discoveredMacs.add(device.getAddress());
+
+                    }
+                }
+                /*if (device.getName().equalsIgnoreCase("NCS_Beacon") || device.getName().equalsIgnoreCase("estimote")) {
                     //This Main looper thread is main for connect gatt, don't remove it
                     // Although you need to pass an appropriate context getApplicationContext(),
                     //Here if you use Looper.getMainLooper() it will stop getting callback and give internal exception fail to register //callback
@@ -188,10 +250,10 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
                             Log.e(TAG, "onLeScan btGatt value returning from connectGatt "+btGatt);
                         }
                     });
-                }
-                stopBLEscan();
+                }*/
+                //stopBLEscan();
             }else{
-                //Log.v("Device Scan Activity", device.getAddress()+" "+"BT device is still too far - not connecting");
+                Log.v("Device Scan Activity", device.getAddress()+" "+"BT device is still too far - not connecting");
             }
         }
     }
