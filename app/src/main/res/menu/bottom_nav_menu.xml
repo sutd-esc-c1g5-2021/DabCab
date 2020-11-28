@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_history_black"
         android:title="@string/title_history" />
 
-    <item
-        android:id="@+id/navigation_declaration"
-        android:icon="@drawable/ic_clipboard_black"
-        android:title="@string/title_declaration" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_declaration"-->
+<!--        android:icon="@drawable/ic_clipboard_black"-->
+<!--        android:title="@string/title_declaration" />-->
 
 </menu>
