@@ -18,7 +18,7 @@
     <string name="LOG">LOG</string>
 
 
-    <string name="welcome">Welcome,</string>
+    <string name="welcome">Welcome</string>
     <string name="bluetoothConnected">Bluetooth Connected</string>
     <string name="bluetoothDenied">Please Allow Bluetooth</string>
     <string name="bluetoothOff">Turn On Bluetooth</string>

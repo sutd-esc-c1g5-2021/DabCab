@@ -2,60 +2,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:id="@+id/home_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="?attr/actionBarSize"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/topIcons"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/topIcons"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="70dp">-->
 
-        <ImageButton
-            android:id="@+id/profileButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custom_image_button"
-            android:padding="7dp"
-            android:src="@drawable/profile_icon" />
+<!--            <ImageButton-->
+<!--                android:id="@+id/profileButton"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:background="@drawable/custom_image_button"-->
+<!--                android:padding="7dp"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:src="@drawable/profile_icon" />-->
 
-        <ImageButton
-            android:id="@+id/notificationButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="15dp"
-            android:background="#FBFBFB"
-            android:src="@drawable/ic_baseline_notifications_none_24" />
-        <TextView
-            android:id="@+id/badge_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/notificationButton"
-            android:layout_alignEnd="@id/notificationButton"
-            android:background="@drawable/item_count"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="99"
-            android:textColor="#FFFFFF"
-            android:textSize="8sp"
-            android:visibility="invisible" />
-    </RelativeLayout>
+<!--            <ImageButton-->
+<!--                android:id="@+id/notificationButton"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:layout_marginEnd="15dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:background="#FBFBFB"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:src="@drawable/ic_baseline_notifications_none_24" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/badge_notification"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignEnd="@id/notificationButton"-->
+<!--                android:layout_alignRight="@id/notificationButton"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginLeft="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/item_count"-->
+<!--                android:text="99"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="8sp"-->
+<!--                android:visibility="invisible" />-->
+<!--        </RelativeLayout>-->
 
 
     <LinearLayout
+        android:id="@+id/welcomeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -64,23 +68,23 @@
             android:id="@+id/welcomeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
             android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
             android:text="@string/welcome"
-            app:fontFamily="@font/open_sans_semibold"
             android:textColor="#000000"
-            android:textSize="35sp" />
+            android:textSize="35sp"
+            app:fontFamily="@font/open_sans_semibold" />
 
-        <TextView
-            android:id="@+id/userName"
-            android:text="@string/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
-            android:fontFamily="@font/open_sans_semibold"
-            android:textColor="#000000"
-            android:textSize="35sp" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/userName"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="50dp"-->
+        <!--            android:layout_marginLeft="50dp"-->
+        <!--            android:fontFamily="@font/open_sans_semibold"-->
+        <!--            android:text="@string/user"-->
+        <!--            android:textColor="#000000"-->
+        <!--            android:textSize="35sp" />-->
     </LinearLayout>
 
 
@@ -88,239 +92,502 @@
         android:id="@+id/bluetoothStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="@drawable/bluetooth_rounded_corner"
         android:fontFamily="@font/open_sans_bold"
+        android:layout_gravity="center"
         android:paddingLeft="40dp"
         android:paddingTop="5dp"
         android:paddingRight="40dp"
         android:paddingBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/check_bluetooth"
         android:textColor="#FFFFFF"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
-
-    <!--    Scrolling view for frequently visited places-->
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:layout_marginTop="10dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/freqPlaces"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="3dp"
-                android:gravity="center"
-                android:text="@string/places_you_frequently_visit"
-                android:textSize="12sp"
-                android:fontFamily="@font/open_sans_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/title_declaration"
                 android:textColor="#000000"
-                android:background="@drawable/location_round_corner" />
-
-            <!--            Frequently visited location 1-->
-            <FrameLayout
-                android:id="@+id/frame_1"
-                android:layout_width="90dp"
+                android:textSize="30sp"
+                app:fontFamily="@font/open_sans_semibold" />
+            <!-- A CardView that contains a TextView -->
+            <!-- Daily Declaration -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/daily_declaration_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:visibility="invisible">
-                <ImageButton
-                    android:id="@+id/location_1_button"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/location_1" />
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:padding="3dp"
+                app:cardCornerRadius="4dp">
 
-                <TextView
-                    android:id="@+id/location_1_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:paddingHorizontal="3dp"
-                    android:fontFamily="@font/open_sans_semibold"
-                    android:text="@string/location_1"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/location_1_count"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="25"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:textSize="25sp" />
-            </FrameLayout>
+                    android:background="@drawable/declaration_bg1"
+                    android:orientation="horizontal">
 
-            <!--            Frequently visited location 2-->
-            <FrameLayout
-                android:id="@+id/frame_2"
-                android:layout_width="90dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/declaration_circle0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/declaration_circle0"
+                            android:gravity="center_vertical"
+                            android:text="@string/zero_percent"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            tools:ignore="RtlCompat"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:text="@string/daily_declaration"
+                            android:textColor="#000000"
+                            android:textSize="15sp"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/open_sans"
+                            android:text="@string/reminder_1"
+                            android:textColor="#000000"
+                            android:textSize="8sp"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="15dp"
+                        android:gravity="right">
+
+                        <Button
+                            android:id="@+id/log_daily_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/circle_button_black"
+                            android:text="@string/LOG"
+                            android:textColor="#000000">
+                            android:fontFamily="@font/open_sans_semibold">
+                        </Button>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!-- Temperature Taking - (Morning) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/morning_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:visibility="invisible">
-                <ImageButton
-                    android:id="@+id/location_2_button"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/location_2" />
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:padding="3dp"
+                app:cardCornerRadius="4dp">
 
-                <TextView
-                    android:id="@+id/location_2_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:paddingHorizontal="3dp"
-                    android:fontFamily="@font/open_sans_semibold"
-                    android:text="@string/location_2"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/location_2_count"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="25"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:textSize="25sp" />
-            </FrameLayout>
+                    android:background="@drawable/declaration_bg1"
+                    android:orientation="horizontal">
 
-            <!--            Frequently visited location 3-->
-            <FrameLayout
-                android:id="@+id/frame_3"
-                android:layout_width="90dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/temp_declaration_circle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/declaration_circle1"
+                            android:gravity="center_vertical"
+                            android:text="0%"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            tools:ignore="RtlCompat"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans"
+                            android:text="@string/morning"
+                            android:textColor="#000000"
+                            android:textSize="8sp"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:text="@string/temperature_taking"
+                            android:textColor="#000000"
+                            android:textSize="15sp"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="15dp"
+                        android:gravity="right">
+
+                        <Button
+                            android:id="@+id/log_temperature_button1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/circle_button_black"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:text="@string/LOG"
+                            android:textColor="#000000"></Button>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Temperature Taking (Evening) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/evening_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:visibility="invisible">
-                <ImageButton
-                    android:id="@+id/location_3_button"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/location_3" />
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:padding="3dp"
+                app:cardCornerRadius="4dp">
 
-                <TextView
-                    android:id="@+id/location_3_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:paddingHorizontal="3dp"
-                    android:fontFamily="@font/open_sans_semibold"
-                    android:text="@string/location_3"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/location_3_count"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="25"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:textSize="25sp" />
-            </FrameLayout>
+                    android:background="@drawable/declaration_bg1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/temp_declaration_circle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/declaration_circle1"
+                            android:gravity="center_vertical"
+                            android:text="0%"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            tools:ignore="RtlCompat"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans"
+                            android:text="@string/evening"
+                            android:textColor="#000000"
+                            android:textSize="8sp"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:text="@string/temperature_taking"
+                            android:textColor="#000000"
+                            android:textSize="15sp"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="15dp"
+                        android:gravity="right">
+
+                        <Button
+                            android:id="@+id/log_temperature_button2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/circle_button_black"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:text="@string/LOG"
+                            android:textColor="#000000"></Button>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-            <!--            Frequently visited location 4-->
-            <FrameLayout
-                android:id="@+id/frame_4"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:visibility="invisible">
-                <ImageButton
-                    android:id="@+id/location_4_button"
-                    android:layout_width="90dp"
+            <!--    Scrolling view for frequently visited places-->
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="?actionBarSize"
+                android:paddingBottom="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/location_4" />
-
-                <TextView
-                    android:id="@+id/location_4_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
-                    android:paddingHorizontal="3dp"
-                    android:fontFamily="@font/open_sans_semibold"
-                    android:text="@string/location_4"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/location_4_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="25"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:textSize="25sp" />
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/freqPlaces"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/location_round_corner"
+                        android:fontFamily="@font/open_sans_semibold"
+                        android:gravity="center"
+                        android:paddingHorizontal="3dp"
+                        android:text="@string/places_you_frequently_visit"
+                        android:textColor="#000000"
+                        android:textSize="12sp" />
 
-            <!--            Frequently visited location 5-->
-            <FrameLayout
-                android:id="@+id/frame_5"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:visibility="invisible">
-                <ImageButton
-                    android:id="@+id/location_5_button"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/location_5" />
+                    <!--            Frequently visited location 1-->
+                    <FrameLayout
+                        android:id="@+id/frame_1"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
 
-                <TextView
-                    android:id="@+id/location_5_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:paddingHorizontal="3dp"
-                    android:fontFamily="@font/open_sans_semibold"
-                    android:text="@string/location_5"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
+                        <ImageButton
+                            android:id="@+id/location_1_button"
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/location_1" />
 
-                <TextView
-                    android:id="@+id/location_5_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:text="25"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:textSize="25sp" />
-            </FrameLayout>
+                        <TextView
+                            android:id="@+id/location_1_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:gravity="center"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/location_1"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/location_1_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="45dp"
+                            android:fontFamily="@font/open_sans_bold"
+                            android:text="25"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25sp" />
+                    </FrameLayout>
+
+                    <!--            Frequently visited location 2-->
+                    <FrameLayout
+                        android:id="@+id/frame_2"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <ImageButton
+                            android:id="@+id/location_2_button"
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/location_2" />
+
+                        <TextView
+                            android:id="@+id/location_2_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:gravity="center"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/location_2"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/location_2_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="45dp"
+                            android:fontFamily="@font/open_sans_bold"
+                            android:text="25"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25sp" />
+                    </FrameLayout>
+
+                    <!--            Frequently visited location 3-->
+                    <FrameLayout
+                        android:id="@+id/frame_3"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <ImageButton
+                            android:id="@+id/location_3_button"
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/location_3" />
+
+                        <TextView
+                            android:id="@+id/location_3_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:gravity="center"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/location_3"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/location_3_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="45dp"
+                            android:fontFamily="@font/open_sans_bold"
+                            android:text="25"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25sp" />
+                    </FrameLayout>
+
+
+                    <!--            Frequently visited location 4-->
+                    <FrameLayout
+                        android:id="@+id/frame_4"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <ImageButton
+                            android:id="@+id/location_4_button"
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/location_4" />
+
+                        <TextView
+                            android:id="@+id/location_4_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:gravity="center"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/location_4"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/location_4_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="45dp"
+                            android:fontFamily="@font/open_sans_bold"
+                            android:text="25"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25sp" />
+                    </FrameLayout>
+
+                    <!--            Frequently visited location 5-->
+                    <FrameLayout
+                        android:id="@+id/frame_5"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <ImageButton
+                            android:id="@+id/location_5_button"
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/location_5" />
+
+                        <TextView
+                            android:id="@+id/location_5_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/open_sans_semibold"
+                            android:gravity="center"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/location_5"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/location_5_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="45dp"
+                            android:fontFamily="@font/open_sans_bold"
+                            android:text="25"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25sp" />
+                    </FrameLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 </LinearLayout>
