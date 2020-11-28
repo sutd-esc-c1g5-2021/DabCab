@@ -105,6 +105,9 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"/>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_height="match_parent"
+        android:id="@+id/declaration_pull_to_refresh"
+        android:layout_width="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -590,4 +593,7 @@
             </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/include_progress_overlay"/>
 </LinearLayout>

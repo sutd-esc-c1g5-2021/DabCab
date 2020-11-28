@@ -25,6 +25,7 @@ import com.hatsumi.bluentry_declaration.AndroidUtils;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.TTSWebActivity;
+import com.hatsumi.bluentry_declaration.ui.home.DeclarationViewModel;
 
 import static android.text.InputType.*;
 
