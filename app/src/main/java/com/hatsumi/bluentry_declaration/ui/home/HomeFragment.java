@@ -4,18 +4,23 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -55,6 +60,8 @@ public class HomeFragment extends Fragment {
     ImageButton location_4_button;
     ImageButton location_5_button;
 
+    ImageButton popup_close_button;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -75,6 +82,7 @@ public class HomeFragment extends Fragment {
         locationButtons.add(location_3_button = getView().findViewById(R.id.location_3_button));
         locationButtons.add(location_4_button = getView().findViewById(R.id.location_4_button));
         locationButtons.add(location_5_button = getView().findViewById(R.id.location_5_button));
+
 
         // Profile settings
         ImageButton profileButton = (ImageButton) getView().findViewById(R.id.profileButton);
@@ -139,7 +147,6 @@ public class HomeFragment extends Fragment {
             }
         }
 
-/*
         // Set onClick for each frequently visited location button
         for (int i = 0; i < locationButtons.size(); i++) {
             ImageButton currButton = locationButtons.get(i);
@@ -147,12 +154,23 @@ public class HomeFragment extends Fragment {
             currButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(homeActivity.this, Popup.class);
-                    intent.putExtra(LOC_KEY, currText.getText().toString());                    //location shown in popup
-                    startActivity(intent);
+                    View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
+                    final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                    ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
+                    popup_close_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                        }
+                    });
+
+//                    Intent intent = new Intent(HomeFragment.this, locPopup.class);
+//                    intent.putExtra(LOC_KEY, currText.getText().toString());                    //location shown in popup
+//                    startActivity(intent);
                 }
             });
-        }*/
+        }
     }
 
 
