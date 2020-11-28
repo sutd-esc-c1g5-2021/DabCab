@@ -1,6 +1,8 @@
 package com.hatsumi.bluentry_declaration;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import java.util.Calendar;
 
 public class LoginPageActivity extends AppCompatActivity {
 
@@ -26,10 +31,23 @@ public class LoginPageActivity extends AppCompatActivity {
 
     private static String TAG = LoginPageActivity.class.toString();
 
+    private void ServiceCaller(Intent intent){
+        stopService(intent);
+
+
+        startService(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+
+        final Intent intent = new Intent(this, BeaconService.class);
+        ServiceCaller(intent);
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
 
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
