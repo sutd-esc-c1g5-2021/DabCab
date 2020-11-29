@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +28,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hatsumi.bluentry_declaration.AndroidUtils;
@@ -44,15 +43,12 @@ import static android.text.InputType.TYPE_CLASS_TEXT;
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.toString();
 
-    //private HomeViewModel homeViewModel;
-
     static boolean active = false;
 
     public final static String LOC_KEY = "LOC_KEY";
     private final static int BLUETOOTH_PERMISSION_CODE = 100;
 
     TextView userName;
-    TextView badgeNotification;
     TextView location_1_count;
 
     TextView location_1_text;
@@ -71,9 +67,6 @@ public class HomeFragment extends Fragment {
 
     private DeclarationViewModel declarationViewModel;
     SwipeRefreshLayout swipeRefreshLayout;
-
-
-//    private static String TAG = DeclarationFragment.class.toString();
 
     private static SUTD_TTS tts;
 
@@ -177,6 +170,8 @@ public class HomeFragment extends Fragment {
                 public void onClick(View v) {
                     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
                     final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                    popupWindow.setOutsideTouchable(true);
                     popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
                     ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
                     popup_close_button.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +180,6 @@ public class HomeFragment extends Fragment {
                             popupWindow.dismiss();
                         }
                     });
-
-//                    Intent intent = new Intent(HomeFragment.this, locPopup.class);
-//                    intent.putExtra(LOC_KEY, currText.getText().toString());                    //location shown in popup
-//                    startActivity(intent);
                 }
             });
         }
