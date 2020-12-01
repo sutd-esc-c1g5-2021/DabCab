@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/periodDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:textSize="18sp" />
+        <!-- Convert below to RecyclerView (PeriodEntry) -->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/periodEntryRecyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
+<!--        <TextView-->
+<!--            android:id="@+id/periodLocation"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="1dp"-->
+<!--            android:textSize="18sp" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/periodCheckIn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="1dp" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/periodCheckOut"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="1dp" />-->
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

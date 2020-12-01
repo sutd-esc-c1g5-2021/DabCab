@@ -23,7 +23,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/ic_profile"
+                android:background="@drawable/ic_menu"
                 android:padding="7dp"
                 android:scaleType="fitXY" />
         </RelativeLayout>
@@ -58,24 +58,6 @@
         <!--            android:textSize="35sp" />-->
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/bluetoothStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bluetooth_rounded_corner"
-        android:fontFamily="@font/open_sans_bold"
-        android:layout_gravity="center"
-        android:paddingLeft="30dp"
-        android:paddingTop="4dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="4dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/check_bluetooth"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"/>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_height="match_parent"
         android:id="@+id/declaration_pull_to_refresh"
         android:layout_width="match_parent">
@@ -88,14 +70,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/bluetoothStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bluetooth_rounded_corner"
+                android:fontFamily="@font/open_sans_bold"
+                android:layout_gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="4dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="4dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/check_bluetooth"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="@string/title_declaration"
                 android:textColor="#000000"
-                android:textSize="30sp"
-                app:fontFamily="@font/open_sans_semibold" />
+                android:textSize="20sp"
+                app:fontFamily="@font/open_sans" />
             <!-- A CardView that contains a TextView -->
             <!-- Daily Declaration -->
             <androidx.cardview.widget.CardView
@@ -264,7 +263,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="20dp"
                 android:padding="3dp"
                 app:cardCornerRadius="4dp">
 
@@ -278,7 +277,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:background="lin">
 
                         <TextView
                             android:id="@+id/temp_declaration_circle2"
@@ -342,12 +342,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="25dp">
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/ic_line_top">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:orientation="horizontal">
 
                     <TextView
