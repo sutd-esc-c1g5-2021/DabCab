@@ -63,7 +63,7 @@
         android:id="@+id/bluetoothStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/bluetooth_rounded_corner"
         android:fontFamily="@font/open_sans_bold"
         android:layout_gravity="center"
@@ -339,7 +339,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
-                android:paddingBottom="@dimen/activity_horizontal_margin">
+                android:paddingBottom="25dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

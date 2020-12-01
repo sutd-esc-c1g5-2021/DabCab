@@ -114,6 +114,26 @@ public class HomeFragment extends Fragment {
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+
+                Button helpButton = popupView.findViewById(R.id.help_button);
+                helpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: Go to profile_icon settings
+                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
+                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
+
+                        Button helpBack = helpView.findViewById(R.id.help_back);
+                        helpBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                helpPopup.dismiss();
+                            }
+                        });
+
+                    }
+                });
             }
         });
 
