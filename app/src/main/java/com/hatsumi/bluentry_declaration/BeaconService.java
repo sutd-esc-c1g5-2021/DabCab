@@ -66,6 +66,7 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
     private NotificationCompat.Builder notificationBuilder;
     private Notification notification;
 
+
     private static final String NOTIFICATION_CHANNEL_ID = "com.hatsumi.beaconservice";
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
