@@ -187,7 +187,7 @@ public class HomeFragment extends Fragment {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                updateBluetoothStatus();
+//                updateBluetoothStatus();
             }
         };
         handler.postDelayed(runnable, milliseconds);

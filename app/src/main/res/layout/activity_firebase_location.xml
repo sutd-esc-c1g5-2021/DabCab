@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".firebase.FirebaseLocationActivity"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="MacAddress"
+        android:id="@+id/MacAddress"
+        android:textSize="20sp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name of location"
+        android:id="@+id/MacAddressName"
+        android:textSize="20sp"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Register Mac Address"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_button"
+        android:id="@+id/RegisterMacAddress"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Return"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_button"
+        android:id="@+id/ReturnToMain"
+        />
+
+
+</LinearLayout>
