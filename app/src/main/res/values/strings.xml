@@ -45,4 +45,23 @@
     <string name="getstarted">Get Started</string>
     <string name="next">Next</string>
     <string name="go_next">Go Next</string>
+    <!-- End of Splash -->
+
+    <!-- For History -->
+    <!--Used in History Page -->
+    <string name="tab1Period">Period</string>
+    <string name="tab2Place">Place</string>
+    <string name="spinnerPeriod">Select</string>
+    <string name="place_text">This is Place</string>
+    <string name="question_mark">\?</string>
+    <string name="popup_period">Help text for Period</string>
+
+
+    <string-array name = "date">
+        <item>Today</item>
+        <item>1 week</item>
+        <item>1 month</item>
+        <item>3 months</item>
+    </string-array>
+    <!-- End of History -->
 </resources>
