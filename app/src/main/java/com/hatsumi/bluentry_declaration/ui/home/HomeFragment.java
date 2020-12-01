@@ -146,12 +146,6 @@ public class HomeFragment extends Fragment {
 //            badgeNotification.setVisibility(View.VISIBLE);
 //        }
 
-
-        userName = getView().findViewById(R.id.userName);
-        // TODO: Change name shown
-        //userName.setText("me");
-
-
         active = true;              //To enable updating of bluetooth status
         updateBluetoothStatus();
         bluetoothStatus.setOnClickListener(new View.OnClickListener() {
@@ -318,26 +312,8 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "Home fragment onCreateView");
 
         return inflater.inflate(R.layout.fragment_home, container, false);
-
-       /* homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;*/
     }
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        active = false;
-//        Log.i(TAG, "onStop");
-//    }
     @Override
     public void onPause() {
         super.onPause();

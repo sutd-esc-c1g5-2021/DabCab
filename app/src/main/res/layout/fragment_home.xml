@@ -39,19 +39,6 @@
                 app:fontFamily="@font/open_sans_semibold" />
         </RelativeLayout>
 
-
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/userName"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="50dp"-->
-        <!--            android:layout_marginLeft="50dp"-->
-        <!--            android:fontFamily="@font/open_sans_semibold"-->
-        <!--            android:text="@string/user"-->
-        <!--            android:textColor="#000000"-->
-        <!--            android:textSize="35sp" />-->
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_height="match_parent"
         android:id="@+id/declaration_pull_to_refresh"
         android:layout_width="match_parent">
@@ -330,11 +317,11 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/ic_line_top"/>
+                android:background="@drawable/ic_line_top" />
 
             <!--    Scrolling view for frequently visited places-->
             <HorizontalScrollView
