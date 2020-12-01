@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="100">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/place"
+        android:text="Place"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_weight="40"
+         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/duration"
+        android:text="Duration"
+        android:textSize="16sp"
+        android:gravity="start"
+        android:layout_gravity="bottom"
+        android:layout_weight="60"
+        />
+
+</LinearLayout>
