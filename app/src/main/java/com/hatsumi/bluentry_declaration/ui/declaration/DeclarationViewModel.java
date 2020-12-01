@@ -1,4 +1,4 @@
-package com.hatsumi.bluentry_declaration.ui.home;
+package com.hatsumi.bluentry_declaration.ui.declaration;
 
 import android.util.MutableBoolean;
 

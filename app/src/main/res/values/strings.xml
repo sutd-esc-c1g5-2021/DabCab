@@ -39,6 +39,9 @@
     <string name="place_text">This is Place</string>
     <string name="question_mark">\?</string>
     <string name="popup_period">Help text for Period</string>
+    <string name="make_easy">We make sure it\'s easy</string>
+    <string name="enable_bluetooth_msg"><![CDATA[Please enable your bluetooth for auto check in & out]]></string>
+    <string name="your_bluetooth_status">Your bluetooth status:</string>
 
 
     <string-array name = "date">

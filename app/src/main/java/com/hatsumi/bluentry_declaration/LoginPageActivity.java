@@ -102,6 +102,9 @@ public class LoginPageActivity extends AppCompatActivity {
                                 else {
                                     Log.d(TAG, "Fail in UI Thread");
                                     Toast.makeText(LoginPageActivity.this, "Invalid", Toast.LENGTH_LONG).show();
+//testing only
+                                    Intent intent = new Intent(LoginPageActivity.this,MainActivity.class);
+                                    startActivity(intent);
                                 }
                             }
                         });

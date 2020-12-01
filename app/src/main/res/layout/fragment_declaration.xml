@@ -7,6 +7,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.declaration.DeclarationFragment">
+    <RelativeLayout
+        android:id="@+id/topIcons"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp">
+
+    <ImageButton
+        android:id="@+id/profileButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_menu"
+        android:padding="7dp"
+        android:scaleType="fitXY" />
+    </RelativeLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_height="match_parent"
         android:id="@+id/declaration_pull_to_refresh"
     android:layout_width="match_parent">
