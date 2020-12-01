@@ -16,11 +16,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="@drawable/ic_baseline_close_24"/>
+
         <TextView
             android:id="@+id/popup_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chosen Location"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/actionBarSize"
+            android:text="@string/chosen_loc_popup"
             android:textColor="#000000" />
     </LinearLayout>
 </LinearLayout>

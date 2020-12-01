@@ -1,6 +1,7 @@
 package com.hatsumi.bluentry_declaration.ui.home;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -99,13 +101,21 @@ public class HomeFragment extends Fragment {
 
 
         // Profile settings
-        ImageButton profileButton = (ImageButton) getView().findViewById(R.id.profileButton);
-//        profileButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO: Go to profile_icon settings
-//            }
-//        });
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        ImageButton profileButton = getView().findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Go to profile_icon settings
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width*0.48), WindowManager.LayoutParams.MATCH_PARENT);
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+            }
+        });
 
 
         //Notification badge counter(invisible if no notification)
@@ -161,15 +171,17 @@ public class HomeFragment extends Fragment {
             }
         }
 
+
         // Set onClick for each frequently visited location button
         for (int i = 0; i < locationButtons.size(); i++) {
             ImageButton currButton = locationButtons.get(i);
-            final TextView currText = locationText.get(i);
+            int finalI = i;
             currButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
-                    final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    ((TextView)popupView.findViewById(R.id.popup_text)).setText(visitedLocation.get(finalI));
+                    PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
                     popupWindow.setOutsideTouchable(true);
                     popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -320,7 +332,6 @@ public class HomeFragment extends Fragment {
         updateBluetoothStatus();
         Log.i(TAG,"onResume");
     }
-
 
 
 

@@ -31,4 +31,5 @@
     <string name="location_3">Location 3</string>
     <string name="location_4">Location 4</string>
     <string name="location_5">Location 5</string>
+    <string name="chosen_loc_popup">Chosen Location</string>
 </resources>
