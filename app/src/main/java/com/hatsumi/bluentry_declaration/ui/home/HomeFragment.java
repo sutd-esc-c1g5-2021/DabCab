@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment {
             bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothConnected);
         }
-        refresh(1000);              //update bluetooth status every sec
+        //refresh(1000);              //update bluetooth status every sec
     }
 
     private void refresh(int milliseconds){
