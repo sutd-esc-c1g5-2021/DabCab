@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
+    <RelativeLayout
+        android:id="@+id/topIcons"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="70dp">
+
+        <ImageButton
+            android:id="@+id/profileButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_menu"
+            android:padding="7dp"
+            android:scaleType="fitXY" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -15,7 +35,7 @@
         android:textColor="#000000"
         android:textAlignment="center"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+        app:layout_constraintBottom_toTopOf= "@+id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

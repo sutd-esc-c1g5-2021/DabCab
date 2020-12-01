@@ -1,17 +1,23 @@
 package com.hatsumi.bluentry_declaration.ui.home;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,23 +25,20 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.hatsumi.bluentry_declaration.R;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.toString();
 
-    //private HomeViewModel homeViewModel;
+    static boolean active = false;
 
     public final static String LOC_KEY = "LOC_KEY";
     private final static int BLUETOOTH_PERMISSION_CODE = 100;
 
     TextView userName;
-    TextView badgeNotification;
     TextView location_1_count;
 
     TextView location_1_text;
@@ -56,7 +59,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        location_1_count = getView().findViewById(R.id.location_1_count);
+        location_1_count = Objects.requireNonNull(getView()).findViewById(R.id.location_1_count);
         bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
 
         ArrayList<TextView> locationText = new ArrayList<>();
@@ -73,14 +76,43 @@ public class HomeFragment extends Fragment {
         locationButtons.add(location_4_button = getView().findViewById(R.id.location_4_button));
         locationButtons.add(location_5_button = getView().findViewById(R.id.location_5_button));
 
-        // Profile settings
-        ImageButton profileButton = (ImageButton) getView().findViewById(R.id.profileButton);
-//        profileButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO: Go to profile_icon settings
-//            }
-//        });
+
+        // OPTIONS page
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        ImageButton profileButton = getView().findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open options page
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width*0.48), WindowManager.LayoutParams.MATCH_PARENT);
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+
+                // Open help page
+                Button helpButton = popupView.findViewById(R.id.help_button);
+                helpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
+                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
+
+                        // Close help page
+                        Button helpBack = helpView.findViewById(R.id.help_back);
+                        helpBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                helpPopup.dismiss();
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
 
         //Notification badge counter(invisible if no notification)
@@ -91,12 +123,7 @@ public class HomeFragment extends Fragment {
 //            badgeNotification.setVisibility(View.VISIBLE);
 //        }
 
-
-        userName = getView().findViewById(R.id.userName);
-        // TODO: Change name shown
-        //userName.setText("me");
-
-
+        active = true;              //To enable updating of bluetooth status
         updateBluetoothStatus();
         bluetoothStatus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,27 +162,37 @@ public class HomeFragment extends Fragment {
             }
         }
 
-/*
-        // Set onClick for each frequently visited location button
+
+        // Popup for frequently visited location
         for (int i = 0; i < locationButtons.size(); i++) {
             ImageButton currButton = locationButtons.get(i);
-            final TextView currText = locationText.get(i);
+            int finalI = i;
             currButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(homeActivity.this, Popup.class);
-                    intent.putExtra(LOC_KEY, currText.getText().toString());                    //location shown in popup
-                    startActivity(intent);
+                    View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
+                    ((TextView)popupView.findViewById(R.id.popup_text)).setText(visitedLocation.get(finalI));
+                    PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                    popupWindow.setOutsideTouchable(true);
+                    popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                    ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
+                    popup_close_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                        }
+                    });
                 }
             });
-        }*/
+        }
     }
 
 
     public void checkPermission(String permission, int requestCode) {
-        if (ContextCompat.checkSelfPermission(getContext(), permission) == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), permission) == PackageManager.PERMISSION_DENIED) {
             // Requesting the permission
-            ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{permission}, requestCode);
         }
     }
 
@@ -165,21 +202,18 @@ public class HomeFragment extends Fragment {
         if (bluetoothAdapter == null) {
             //Log.d(TAG, "Bluetooth not supported");
             bluetoothStatus.setText("Bluetooth not supported"); //TODO put into strings.xml
-        }
-
-        else if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothDenied);
-        }
-        else if (!bluetoothAdapter.isEnabled()){
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else if (!bluetoothAdapter.isEnabled()) {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothOff);
-        }
-        else {
-            bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+        } else {
+            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
             bluetoothStatus.setText(R.string.bluetoothConnected);
         }
-        //refresh(1000);              //update bluetooth status every sec
+
+        refresh(1000);          //update bluetooth status every sec
     }
 
     private void refresh(int milliseconds){
@@ -187,7 +221,9 @@ public class HomeFragment extends Fragment {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-//                updateBluetoothStatus();
+                if (active){
+                updateBluetoothStatus();
+                }
             }
         };
         handler.postDelayed(runnable, milliseconds);
@@ -199,17 +235,20 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "Home fragment onCreateView");
 
         return inflater.inflate(R.layout.fragment_home, container, false);
-       /* homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;*/
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        active = false;
+        Log.i(TAG,"onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        active = true;
+        updateBluetoothStatus();
+        Log.i(TAG,"onResume");
     }
 }

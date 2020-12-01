@@ -1,15 +1,22 @@
 package com.hatsumi.bluentry_declaration.ui.declaration;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,10 +64,8 @@ public class DeclarationFragment extends Fragment {
             }
         });
         /*declarationViewModel.getTempDeclaration1_Done().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-
             @Override
             public void onChanged(Boolean aBoolean) {
-
             }
         })*/
         return root;
@@ -69,6 +74,45 @@ public class DeclarationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        // OPTIONS page
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        ImageButton profileButton = getView().findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open options page
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width * 0.48), WindowManager.LayoutParams.MATCH_PARENT);
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+
+                // Open help page
+                Button helpButton = popupView.findViewById(R.id.help_button);
+                helpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
+                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
+
+                        // Close help page
+                        Button helpBack = helpView.findViewById(R.id.help_back);
+                        helpBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                helpPopup.dismiss();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
         tts = SUTD_TTS.getSutd_tts();
 
         swipeRefreshLayout = getView().findViewById(R.id.declaration_pull_to_refresh);
