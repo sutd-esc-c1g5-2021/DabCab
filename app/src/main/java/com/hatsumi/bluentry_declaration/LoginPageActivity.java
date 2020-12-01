@@ -1,9 +1,14 @@
 package com.hatsumi.bluentry_declaration;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -90,6 +95,8 @@ public class LoginPageActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
                                     startActivity(intent);
+                                    createNotificationChannel();
+                                    Reminder();
                                     LoginPageActivity.this.finish();
                                 }
                                 else {
@@ -142,5 +149,31 @@ public class LoginPageActivity extends AppCompatActivity {
         });
 
     }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Reminderchannel";
+            String description = "Channel for Hatsumi's Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void Reminder(){
+        Toast.makeText(LoginPageActivity.this,"Reminder set!",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginPageActivity.this,ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,15);
+        calendar.set(Calendar.MINUTE,28);
+        calendar.set(Calendar.SECOND,0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+    }
+
 
 }
