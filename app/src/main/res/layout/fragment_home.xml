@@ -18,7 +18,6 @@
                 android:id="@+id/profileButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
@@ -26,25 +25,21 @@
                 android:background="@drawable/ic_menu"
                 android:padding="7dp"
                 android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/welcomeUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/welcome"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:fontFamily="@font/open_sans_semibold" />
         </RelativeLayout>
 
 
-    <LinearLayout
-        android:id="@+id/welcomeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/welcomeUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="@string/welcome"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            app:fontFamily="@font/open_sans_semibold" />
 
         <!--        <TextView-->
         <!--            android:id="@+id/userName"-->
@@ -56,7 +51,6 @@
         <!--            android:text="@string/user"-->
         <!--            android:textColor="#000000"-->
         <!--            android:textSize="35sp" />-->
-    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_height="match_parent"
         android:id="@+id/declaration_pull_to_refresh"
@@ -277,8 +271,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:orientation="vertical"
-                        android:background="lin">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/temp_declaration_circle2"
@@ -335,20 +328,24 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_line_top"/>
 
             <!--    Scrolling view for frequently visited places-->
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="25dp"
-                android:background="@drawable/ic_line_top">
+                android:layout_marginBottom="25dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="30dp"
                     android:orientation="horizontal">
 
                     <TextView
