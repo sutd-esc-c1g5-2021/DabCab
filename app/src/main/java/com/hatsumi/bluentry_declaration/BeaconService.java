@@ -34,9 +34,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**Both RX and RSSI (Received Signal Strength Indication) are indications of the power level being received
  * by an antenna
@@ -51,6 +58,7 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
 
     private BluetoothGatt btGatt;
     private BluetoothAdapter mBluetoothAdapter;
+    FirebaseUserPeriod fbh;
 
     public void onCreate(){
         super.onCreate();
@@ -61,7 +69,29 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
 
         writeLine("Automate service created...");
         getBTService();
-    }
+        ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+
+        // This schedule a runnable task every 2 minutes
+        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    Log.d(TAG, "Running the check BLE runnable");
+                    for (String macAddress: discoveredMacs.keySet()) {
+                        long lastTime = discoveredMacs.get(macAddress);
+                        Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
+                        if (System.currentTimeMillis() - lastTime > 10000) {
+                            Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
+                            putNotification("You have checked out");
+                            String studentID = "1001234";
+                            fbh = new FirebaseUserPeriod(studentID);
+                            fbh.outOfRange(macAddress);
+
+                            discoveredMacs.remove(macAddress);
+
+                        }
+                    }
+                }
+            }, 0, 5, TimeUnit.SECONDS);
+        }
 
     private NotificationCompat.Builder notificationBuilder;
     private Notification notification;
@@ -158,10 +188,7 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
 
     public void startBLEscan(){
         Log.d(TAG, "Start BLE scan");
-
         mBluetoothAdapter.startLeScan(this);
-
-
     }
 
     public void stopBLEscan(){
@@ -191,53 +218,60 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         }
     }
 
-    private ArrayList<String> discoveredMacs = new ArrayList<String>();
+    private void putNotification(String message) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = "com.hatsumi.swag";
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("BluEntry Check In")
+                        .setContentText(message)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("You have checked into location"))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        try{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(channelId,
+                        "com.hatsumi.channel",
+                        NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+            }
+            Random rand = new Random();
+            notificationManager.notify(rand.nextInt(10000) /* ID of notification */, notificationBuilder.build());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private HashMap<String, Long> discoveredMacs = new HashMap<>();
 
     @Override
     public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
         if(device!=null && device.getName()!=null){
             Log.d(TAG + " onLeScan: ", "Name: "+device.getName() + "Address: "+device.getAddress()+ "RSSI: "+rssi);
+
             if(rssi > -90 && rssi <-1){
 
                 if (device.getName().equalsIgnoreCase("BLE_NFC")) {
                     writeLine("Automate service BLE device in range: "+ device.getName()+ " "+rssi);
-                    if (!discoveredMacs.contains(device.getAddress())) {
+                    if (!discoveredMacs.containsKey(device.getAddress())) {
                         Log.d(TAG, "New device!");
+                        putNotification("You have checked in");
+                        discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                                PendingIntent.FLAG_ONE_SHOT);
-                        String channelId = "com.hatsumi.swag";
-                        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        NotificationCompat.Builder notificationBuilder =
-                                new NotificationCompat.Builder(this, channelId)
-                                        .setSmallIcon(R.mipmap.ic_launcher)
-                                        .setContentTitle("BluEntry Check In")
-                                        .setContentText("You have checked into")
-                                        .setAutoCancel(true)
-                                        .setSound(defaultSoundUri)
-                                        .setStyle(new NotificationCompat.BigTextStyle()
-                                                .bigText("You have checked into location"))
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setContentIntent(pendingIntent);
-
-                        NotificationManager notificationManager =
-                                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                        try{
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                NotificationChannel channel = new NotificationChannel(channelId,
-                                        "com.hatsumi.channel",
-                                        NotificationManager.IMPORTANCE_HIGH);
-                                notificationManager.createNotificationChannel(channel);
-                            }
-                            Random rand = new Random();
-                            notificationManager.notify(rand.nextInt(10000) /* ID of notification */, notificationBuilder.build());
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        discoveredMacs.add(device.getAddress());
-
+                        String studentID = "1001234";
+                        fbh = new FirebaseUserPeriod(studentID);
+                        fbh.inRange(device.getAddress());
                     }
                 }
                 /*if (device.getName().equalsIgnoreCase("NCS_Beacon") || device.getName().equalsIgnoreCase("estimote")) {
@@ -256,6 +290,8 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
             }else{
                 Log.v("Device Scan Activity", device.getAddress()+" "+"BT device is still too far - not connecting");
             }
+
+
         }
     }
 

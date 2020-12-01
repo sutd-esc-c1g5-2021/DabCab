@@ -42,7 +42,7 @@ public class FirebaseUserPeriod {
     DatabaseReference checkedInRef = userRef.child("CheckedIn");
 
 
-    FirebaseUserPeriod(String usern){
+    public FirebaseUserPeriod(String usern){
         this.usern = usern;
     }
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "797300240600",
+    "firebase_url": "https://fir-prac-c194b.firebaseio.com",
+    "project_id": "fir-prac-c194b",
+    "storage_bucket": "fir-prac-c194b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797300240600:android:9367a5c7a4350ff12967ad",
+        "android_client_info": {
+          "package_name": "com.hatsumi.bluentry_declaration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797300240600-f0hipql7k281snp5gvqpm3r5fe9mruv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hatsumi.bluentry_declaration",
+            "certificate_hash": "3e48e3b5d27eaeb78625ccfb1ba2d07f23d4a29f"
+          }
+        },
+        {
+          "client_id": "797300240600-e5npf6er968s0rv52l946g5ve3qk7018.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3L1j8rbFKsjDjp-_gzm1nt2Bj-26yUGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797300240600-e5npf6er968s0rv52l946g5ve3qk7018.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+
 import java.util.Calendar;
 
 public class LoginPageActivity extends AppCompatActivity {
@@ -107,7 +109,7 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
-                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+                /*AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
                 AsyncTask.execute(new Runnable() {
                                       @Override
                                       public void run() {
@@ -131,7 +133,10 @@ public class LoginPageActivity extends AppCompatActivity {
                                           }
 
                                       }
-                                  });
+                                  });*/
+                String studentID = "1001234";
+                FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
+                fbh.inRange("64:CF:D9:2D:C8:90");
 
             }
         });
