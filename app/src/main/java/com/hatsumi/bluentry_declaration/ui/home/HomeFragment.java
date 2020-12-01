@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         locationButtons.add(location_5_button = getView().findViewById(R.id.location_5_button));
 
 
-        // Profile settings
+        // OPTIONS page
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
@@ -108,22 +108,23 @@ public class HomeFragment extends Fragment {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Go to profile_icon settings
+                //Open options page
                 View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
                 PopupWindow popupWindow = new PopupWindow(popupView, (int) (width*0.48), WindowManager.LayoutParams.MATCH_PARENT);
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
 
+                // Open help page
                 Button helpButton = popupView.findViewById(R.id.help_button);
                 helpButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: Go to profile_icon settings
                         View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
                         PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
                         helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
 
+                        // Close help page
                         Button helpBack = helpView.findViewById(R.id.help_back);
                         helpBack.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -131,7 +132,6 @@ public class HomeFragment extends Fragment {
                                 helpPopup.dismiss();
                             }
                         });
-
                     }
                 });
             }
@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
         //userName.setText("me");
 
 
-        active = true;
+        active = true;              //To enable updating of bluetooth status
         updateBluetoothStatus();
         bluetoothStatus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
         }
 
 
-        // Set onClick for each frequently visited location button
+        // Popup for frequently visited location
         for (int i = 0; i < locationButtons.size(); i++) {
             ImageButton currButton = locationButtons.get(i);
             int finalI = i;

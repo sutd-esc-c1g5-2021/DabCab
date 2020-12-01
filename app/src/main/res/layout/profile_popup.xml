@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:drawable/spinner_dropdown_background"
+    android:background="@drawable/ic_profile_popup_background"
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
@@ -15,6 +15,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/ic_profile"
         android:padding="7dp"
         android:scaleType="fitXY" />
@@ -25,15 +26,16 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/profileButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp">
 
         <Button
             android:id="@+id/help_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
+            android:background="@drawable/ic_line_bottom"
             android:fontFamily="@font/open_sans_semibold"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text="Help"
             android:textColor="#000000"
             android:textSize="18sp" />
@@ -41,9 +43,9 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
+            android:background="@drawable/ic_line_bottom"
             android:fontFamily="@font/open_sans_semibold"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text="Feedback"
             android:textColor="#000000"
             android:textSize="18sp" />
@@ -54,6 +56,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
         app:layout_constraintBottom_toBottomOf="parent">
         <TextView
             android:layout_width="match_parent"
@@ -63,8 +66,8 @@
             android:textSize="11sp" />
 
         <ImageButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/ic_logo" />
