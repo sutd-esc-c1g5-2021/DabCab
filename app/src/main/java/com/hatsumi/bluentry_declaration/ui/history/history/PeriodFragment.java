@@ -2,6 +2,7 @@ package com.hatsumi.bluentry_declaration.ui.history.history;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,27 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.firebase.EntryPeriod;
+import com.hatsumi.bluentry_declaration.firebase.PeriodViewAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod.formatTime;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,10 +95,80 @@ public class PeriodFragment extends Fragment {
     }
 
 
+    private List<EntryPeriod> entryPeriod = new ArrayList<>();
+
+    private static String TAG = PeriodFragment.class.toString();
+    DateFormat dateTime = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss aa");
+
+    //TODO: Refractor all of Firebase logic into a helper class
+    private void setupFirebase() {
+        Log.d(TAG, "Setting up firebase datasource");
+
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234Period");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                entryPeriod.clear();
+                Log.d(TAG, "Firebase data change");
+                for (DataSnapshot day_snpsht: snapshot.getChildren()) {
+                    // Iterate through the days
+                    for (DataSnapshot snpsht: day_snpsht.getChildren()) {
+                        EntryPeriod data = snpsht.getValue(EntryPeriod.class);
+                        entryPeriod.add(0, data);
+                        Log.d(TAG, "Firebase data " + snpsht.getValue().toString());
+                    }
+                }
+                periodRowAdapter.notifyDataSetChanged();
+                Log.d(TAG, "Notified data set changed");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setupFirebaseToday() {
+        Log.d(TAG, "Setting up firebase datasource (Today)");
+
+        Date date = new Date();
+        String dt = dateTime.format(date);
+        String entryDate = dt.substring(0, dt.indexOf(","));
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234Period").child(entryDate);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                entryPeriod.clear();
+                Log.d(TAG, "Firebase data change");
+                for (DataSnapshot day_snpsht: snapshot.getChildren()) {
+                    EntryPeriod data = day_snpsht.getValue(EntryPeriod.class);
+                    entryPeriod.add(0, data);
+                    Log.d(TAG, "Firebase data " + day_snpsht.getValue().toString());
+
+                }
+                periodRowAdapter.notifyDataSetChanged();
+                Log.d(TAG, "Notified data set changed");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_period, container, false);
+
+
+
 
         Button helpButton = view.findViewById(R.id.help);
         helpButton.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +195,23 @@ public class PeriodFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selected = parentView.getItemAtPosition(position).toString();
+                switch (position) {
+                    case 0: {
+                        //Update data for today only
+                        setupFirebaseToday();
+                        break;
+                    }
+                    case 1: {
+                        setupFirebase();
+                        break;
+                    }
+                    default: {
+                        Log.d(TAG, "TODO: Need to implement this button");
+                        break;
+                    }
+                }
                 Toast.makeText(parentView.getContext(), selected, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Selected");
             }
 
             @Override
@@ -126,20 +226,25 @@ public class PeriodFragment extends Fragment {
 //        periodEntryRecyclerView = view.findViewById(R.id.periodEntryRecyclerView);
 //        periodEntryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        rowArrayList = new ArrayList<>();
+        //rowArrayList = new ArrayList<>();
 
 //        entryArrayList = new ArrayList<>();
 
-        periodRowAdapter = new PeriodRowAdapter(getActivity(), rowArrayList);
+        //periodRowAdapter = new PeriodRowAdapter(getActivity(), rowArrayList);
+
+        periodRowAdapter = new PeriodRowAdapter(getActivity(), entryPeriod);
+        periodRecyclerView.setAdapter(periodRowAdapter);
+
 
 //        periodEntryAdapter = new PeriodEntryAdapter(getActivity(), entryArrayList);
-       periodRecyclerView.setAdapter(periodRowAdapter);
+ //      periodRecyclerView.setAdapter(periodRowAdapter);
 //        periodEntryRecyclerView.setAdapter(periodEntryAdapter);
-        createListData();
+        setupFirebaseToday();
 
                 // Inflate the layout for this fragment
         return view;
     }
+    /*
 
     private void createListData() {
 //        PeriodEntry entry = new PeriodEntry("Gong Cha First", new Date(), new Date());
@@ -161,7 +266,7 @@ public class PeriodFragment extends Fragment {
         row = new PeriodRow(new Date());
         rowArrayList.add(row);
         periodRowAdapter.notifyDataSetChanged();
-    }
+    }*/
 }
 
 

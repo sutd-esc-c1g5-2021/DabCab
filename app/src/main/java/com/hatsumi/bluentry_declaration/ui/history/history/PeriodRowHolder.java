@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.firebase.EntryPeriod;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,8 +18,8 @@ public class PeriodRowHolder extends RecyclerView.ViewHolder {
         periodDate = itemView.findViewById(R.id.periodDate);
     }
 
-    public void setDetails(PeriodRow row) {
+    public void setDetails(EntryPeriod period) {
         DateFormat dateFormat = new SimpleDateFormat("M-d");
-        periodDate.setText(dateFormat.format(row.getDate()));
+        periodDate.setText("Place: " + period.getPlace() + ", duration: " + period.getDuration());
     }
 }

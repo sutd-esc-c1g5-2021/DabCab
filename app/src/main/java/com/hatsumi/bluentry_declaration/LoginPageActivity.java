@@ -128,20 +128,27 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
-                Intent intent = new Intent(LoginPageActivity.this, OnBoardingActivity.class);
-                startActivity(intent);
 
-                /*AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+
+               // Intent intent = new Intent(LoginPageActivity.this, OnBoardingActivity.class);
+               // startActivity(intent);
+
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
                 AsyncTask.execute(new Runnable() {
                                       @Override
                                       public void run() {
                                           try {
-                                              Thread.sleep(5000);
+                                              String studentID = "1001234";
+                                              FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
+                                              fbh.outOfRange("64:CF:D9:2D:C8:90");
+                                              fbh.inRange("64:CF:D9:2D:C8:90");
+
                                               Log.d(TAG, "Sleep in background task complete");
 
                                               runOnUiThread(new Runnable() {
                                                   @Override
                                                   public void run() {
+
                                                       AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
                                                       Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                                       Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
@@ -150,15 +157,13 @@ public class LoginPageActivity extends AppCompatActivity {
                                                       LoginPageActivity.this.finish();
                                                   }
                                               });
-                                          } catch (InterruptedException e) {
+                                          } catch (Exception e) {
                                               e.printStackTrace();
                                           }
 
                                       }
-                                  });*/
-                String studentID = "1001234";
-                FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
-                fbh.inRange("64:CF:D9:2D:C8:90");
+                                  });
+
 
             }
         });
