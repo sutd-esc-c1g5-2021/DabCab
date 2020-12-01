@@ -1,7 +1,14 @@
 package com.hatsumi.bluentry_declaration;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+
+import java.util.Calendar;
 
 public class LoginPageActivity extends AppCompatActivity {
 
@@ -26,10 +38,24 @@ public class LoginPageActivity extends AppCompatActivity {
 
     private static String TAG = LoginPageActivity.class.toString();
 
+    private void ServiceCaller(Intent intent){
+        stopService(intent);
+
+
+        startService(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+
+        final Intent intent = new Intent(this, BeaconService.class);
+        ServiceCaller(intent);
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
 
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
@@ -69,6 +95,8 @@ public class LoginPageActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
                                     startActivity(intent);
+                                    createNotificationChannel();
+                                    Reminder();
                                     LoginPageActivity.this.finish();
                                 }
                                 else {
@@ -88,7 +116,7 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
-                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+                /*AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
                 AsyncTask.execute(new Runnable() {
                                       @Override
                                       public void run() {
@@ -112,11 +140,40 @@ public class LoginPageActivity extends AppCompatActivity {
                                           }
 
                                       }
-                                  });
+                                  });*/
+                String studentID = "1001234";
+                FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
+                fbh.inRange("64:CF:D9:2D:C8:90");
 
             }
         });
 
     }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Reminderchannel";
+            String description = "Channel for Hatsumi's Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void Reminder(){
+        Toast.makeText(LoginPageActivity.this,"Reminder set!",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginPageActivity.this,ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,15);
+        calendar.set(Calendar.MINUTE,28);
+        calendar.set(Calendar.SECOND,0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+    }
+
 
 }
