@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                 scheduleNotification(getNotification("5 second delay"), 5000);
             }
         }
+
+
+        startService(new Intent(getApplicationContext(), FloatingService.class));
     }
 
 
