@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+import com.hatsumi.bluentry_declaration.ui.splash.OnBoardingActivity;
+import com.hatsumi.bluentry_declaration.ui.splash.SplashActivity;
 
 import java.util.Calendar;
 
@@ -126,6 +128,9 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
+                Intent intent = new Intent(LoginPageActivity.this, OnBoardingActivity.class);
+                startActivity(intent);
+
                 /*AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
                 AsyncTask.execute(new Runnable() {
                                       @Override

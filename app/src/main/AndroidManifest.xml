@@ -27,13 +27,22 @@
         <service android:name="com.hatsumi.bluentry_declaration.FloatingService" />
 
 
-        <activity android:name=".LoginPageActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.splash.OnBoardingActivity" android:parentActivityName=".ui.splash.SplashActivity">
+
+        </activity>
+
+        <activity
+            android:name=".LoginPageActivity"
+            android:parentActivityName=".ui.splash.SplashActivity"/>
+
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".LoginPageActivity">

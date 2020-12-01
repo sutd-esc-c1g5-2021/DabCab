@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:background="@drawable/duck"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:text="@string/nextscreen"
+        android:textAlignment="center"
+        android:textColor="#1733BA"
+        android:textSize="25sp" />
+
+    <!-- Look! It's an old button that got removed from the onBoarding screen! Nobody will see this either!
+
+    <ImageButton
+        android:id="@+id/next_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/next"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@color/splash_background_colour"
+        android:onClick="next"
+        android:paddingBottom="5dp"
+        android:contentDescription="@string/go_next"/>
+
+      -->
+
+</LinearLayout>

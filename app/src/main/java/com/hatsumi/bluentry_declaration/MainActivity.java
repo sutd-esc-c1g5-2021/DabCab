@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         beaconManager.bind(this);
         Log.d(TAG, "BeaconManager initialized");
         Log.d(TAG, "Scheduling notification for 30 seconds");
-        
+
+
         startService(new Intent(getApplicationContext(), FloatingService.class));
     }
 
