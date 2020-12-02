@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.d(TAG, "App went back to home screen");
         leftApp();
-        /*if (mBound) {
-            //unbindService(mConnection);
+        if (mBound) {
+            unbindService(mConnection);
             mBound = false;
-        }*/
+        }
     }
 
 

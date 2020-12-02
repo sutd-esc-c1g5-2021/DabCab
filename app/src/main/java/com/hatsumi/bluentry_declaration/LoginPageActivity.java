@@ -58,6 +58,19 @@ public class LoginPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+        final Intent intent = new Intent(this, BeaconService.class);
+        ServiceCaller(intent);
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(overlayIntent, 0);
+        }
+
+
         if (!Settings.canDrawOverlays(this)) {
             Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
             startActivityForResult(overlayIntent, 0);
