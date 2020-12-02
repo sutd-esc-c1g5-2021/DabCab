@@ -3,10 +3,15 @@ package com.hatsumi.bluentry_declaration;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
@@ -29,15 +34,70 @@ import org.altbeacon.beacon.Region;
 
 import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity implements BeaconConsumer {
+public class MainActivity extends AppCompatActivity {
 
     private BeaconManager beaconManager;
     public final String TAG = MainActivity.this.toString();
+
+
+    /** Messenger for communicating with the service. */
+    Messenger mService = null;
+
+    /** Flag indicating whether we have called bind on the service. */
+    boolean mBound;
+
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the object we can use to
+            // interact with the service.  We are communicating with the
+            // service using a Messenger, so here we get a client-side
+            // representation of that from the raw IBinder object.
+            mService = new Messenger(service);
+            mBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            mService = null;
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "App went back to home screen");
+        leftApp();
+        /*if (mBound) {
+            //unbindService(mConnection);
+            mBound = false;
+        }*/
+    }
+
+
+    public void leftApp() {
+        if (!mBound) return;
+        // Create and send a message to the service, using a supported 'what' value
+        Message msg = Message.obtain(null, BeaconService.MSG_LEFT_APP, 0, 0);
+        try {
+            mService.send(msg);
+            Log.d(TAG, "Sent left app message");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bindService(new Intent(this, BeaconService.class), mConnection,
+                Context.BIND_AUTO_CREATE);
         try{
             this.getSupportActionBar().hide();
         } catch (NullPointerException ex){ }
@@ -51,13 +111,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        beaconManager = BeaconManager.getInstanceForApplication(this);
-        beaconManager.bind(this);
-        Log.d(TAG, "BeaconManager initialized");
-        Log.d(TAG, "Scheduling notification for 30 seconds");
-
-
-        //startService(new Intent(getApplicationContext(), FloatingService.class));
     }
 
 
@@ -83,24 +136,4 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 //        return builder.build();
 //    }
 
-    @Override
-    public void onBeaconServiceConnect() {
-        Log.d(TAG, "Beacon Service connected");
-        beaconManager.removeAllRangeNotifiers();
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                if (beacons.size() > 0) {
-                    Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
-                }
-            }
-        });
-
-        try {
-            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
-        } catch (RemoteException e) {
-            Log.d(TAG, "Got an exception");
-        }
-    }
 }

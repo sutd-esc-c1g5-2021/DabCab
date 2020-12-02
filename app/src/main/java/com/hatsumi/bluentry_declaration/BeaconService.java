@@ -25,6 +25,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceManager;
 
 import android.text.TextUtils;
@@ -35,6 +37,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+
+import org.altbeacon.beacon.Beacon;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +64,8 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
     private BluetoothAdapter mBluetoothAdapter;
     FirebaseUserPeriod fbh;
 
+    static final String ACTION_LEFT_APP = "com.hatsumi.beaconservice.left_app";
+
     public void onCreate(){
         super.onCreate();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -84,6 +90,8 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
                             String studentID = "1001234";
                             fbh = new FirebaseUserPeriod(studentID);
                             fbh.outOfRange(macAddress);
+
+                            stopService(new Intent(getApplicationContext(), FloatingService.class));
 
                             discoveredMacs.remove(macAddress);
 
@@ -129,6 +137,49 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         mNotificationManager.notify(2, notificationBuilder.build());
     }
 
+
+    private void showBubble() {
+
+    }
+
+    static final int MSG_LEFT_APP = 1;
+    static final int MSG_ENTERED_APP = 2;
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LEFT_APP:
+                    //Start the FloatingService
+                    Log.d(TAG, "Got the left app");
+                    /*if (fbh != null)
+                        startService(new Intent(getApplicationContext(), FloatingService.class));*/
+                    break;
+                case MSG_ENTERED_APP:
+                    Log.d(TAG, "Got the enntered app");
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    /**
+     * Target we publish for clients to send messages to IncomingHandler.
+     */
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+    /**
+     * When binding to the service, we return an interface to our messenger
+     * for sending messages to the service.
+     */
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d(TAG, "BeaconService bind");
+        return mMessenger.getBinder();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -149,10 +200,6 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         return START_STICKY;
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
 
     @Override
     public void onDestroy() {
@@ -272,6 +319,7 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
                         String studentID = "1001234";
                         fbh = new FirebaseUserPeriod(studentID);
                         fbh.inRange(device.getAddress());
+
                     }
                 }
                 /*if (device.getName().equalsIgnoreCase("NCS_Beacon") || device.getName().equalsIgnoreCase("estimote")) {
