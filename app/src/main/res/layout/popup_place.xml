@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About Declaration"
+            android:text="About Place"
             android:fontFamily="@font/open_sans_bold"
             android:textSize="25sp"
             android:gravity="center"/>

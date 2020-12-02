@@ -1,15 +1,15 @@
 package com.hatsumi.bluentry_declaration.ui.history;
 
-public class PeriodEntry {
+public class PlaceEntry  {
     private String duration;
-    private String place;
+    private String date;
 
-    public PeriodEntry() {
+    public PlaceEntry() {
     }
 
-    public PeriodEntry(String duration, String place) {
+    public PlaceEntry(String duration, String date) {
         this.duration = duration;
-        this.place = place;
+        this.date = date;
     }
 
     public String getDuration() {
@@ -20,11 +20,11 @@ public class PeriodEntry {
         this.duration = duration;
     }
 
-    public String getPlace() {
-        return place;
+    public String getDate() {
+        return date;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setDate(String date) {
+        this.date = date;
     }
 }

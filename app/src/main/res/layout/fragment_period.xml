@@ -1,51 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.history.PeriodFragment">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!-- TODO: Update blank fragment layout -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:layout_margin="15dp">
-                <Spinner
-                    android:id="@+id/spinnerPeriod"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:dropDownSelector="@android:drawable/arrow_down_float"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/spinnerPeriod"
-                    android:textColor="#4C5EBD"
-                    />
 
-                <Button
-                    android:id="@+id/help"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/circle_button_darkgrey"
-                    android:text="@string/question_mark"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/open_sans_semibold">
-                </Button>
-        </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.history.PeriodFragment">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/periodRecyclerView"
+            android:orientation="horizontal">
+    <!--        &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:layout_margin="15dp">
+                    <Spinner
+                        android:id="@+id/spinnerPeriod"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:dropDownSelector="@android:drawable/arrow_down_float"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/spinnerPeriod"
+                        android:textColor="#4C5EBD"
+                        />
+
+                    <Button
+                        android:id="@+id/help"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/circle_button_darkgrey"
+                        android:text="@string/question_mark"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/open_sans_semibold">
+                    </Button>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/periodRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
         </LinearLayout>
-    </FrameLayout>
-</ScrollView>
+    </ScrollView>
+
+
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical">-->
+
+    <!--        </LinearLayout>-->

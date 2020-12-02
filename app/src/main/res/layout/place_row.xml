@@ -17,8 +17,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/period_place"
-            android:text="Place"
+            android:id="@+id/place_date"
+            android:text="Date"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingLeft="20dp"
@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/period_duration"
+            android:id="@+id/place_duration"
             android:text="Duration"
             android:textSize="16sp"
             android:gravity="start"
