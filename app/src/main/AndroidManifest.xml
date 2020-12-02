@@ -27,7 +27,8 @@
         <service android:name="com.hatsumi.bluentry_declaration.FloatingService" />
 
 
-        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen">
+        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,22 +36,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.splash.OnBoardingActivity" android:parentActivityName=".ui.splash.SplashActivity">
+        <activity android:name=".ui.splash.OnBoardingActivity" android:parentActivityName=".ui.splash.SplashActivity" android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
 
         </activity>
 
         <activity
             android:name=".LoginPageActivity"
-            android:parentActivityName=".ui.splash.SplashActivity"/>
+            android:parentActivityName=".ui.splash.SplashActivity" android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
 
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".LoginPageActivity">
+            android:parentActivityName=".LoginPageActivity" android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
 
         </activity>
         <activity
             android:name=".TTSWebActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
 
         </activity>
 

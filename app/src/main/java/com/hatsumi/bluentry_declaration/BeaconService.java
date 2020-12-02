@@ -13,6 +13,10 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +29,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceManager;
 
 import android.text.TextUtils;
@@ -35,6 +41,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+
+import org.altbeacon.beacon.Beacon;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,12 +61,16 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class BeaconService extends Service implements BluetoothAdapter.LeScanCallback{
+public class BeaconService extends Service {
     private static final String TAG = BeaconService.class.getSimpleName();
 
     private BluetoothGatt btGatt;
     private BluetoothAdapter mBluetoothAdapter;
-    FirebaseUserPeriod fbh;
+    // Object of the current firebase instance
+    FirebaseUserPeriod fbh = null;
+    private static String studentID = "1001234";
+
+    static final String ACTION_LEFT_APP = "com.hatsumi.beaconservice.left_app";
 
     public void onCreate(){
         super.onCreate();
@@ -80,10 +92,12 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
                         Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
                         if (System.currentTimeMillis() - lastTime > 10000) {
                             Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
-                            putNotification("You have checked out");
+                            putNotification("BluEntry Check Out", "You have checked out");
                             String studentID = "1001234";
                             fbh = new FirebaseUserPeriod(studentID);
                             fbh.outOfRange(macAddress);
+
+                            stopService(new Intent(getApplicationContext(), FloatingService.class));
 
                             discoveredMacs.remove(macAddress);
 
@@ -129,6 +143,50 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         mNotificationManager.notify(2, notificationBuilder.build());
     }
 
+
+    private void showBubble() {
+
+    }
+
+    static final int MSG_LEFT_APP = 1;
+    static final int MSG_ENTERED_APP = 2;
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LEFT_APP:
+                    //Start the FloatingService
+                    Log.d(TAG, "Got the left app");
+                    if (fbh != null)
+                        startService(new Intent(getApplicationContext(), FloatingService.class));
+                    break;
+                case MSG_ENTERED_APP:
+                    Log.d(TAG, "Got the enntered app");
+                        stopService(new Intent(getApplicationContext(), FloatingService.class));
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    /**
+     * Target we publish for clients to send messages to IncomingHandler.
+     */
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+    /**
+     * When binding to the service, we return an interface to our messenger
+     * for sending messages to the service.
+     */
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d(TAG, "BeaconService bind");
+        return mMessenger.getBinder();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -149,10 +207,6 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         return START_STICKY;
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
 
     @Override
     public void onDestroy() {
@@ -182,17 +236,75 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         return mBluetoothAdapter;
     }
 
+
+    private void handleLeScanDevice(BluetoothDevice device) {
+        if (!discoveredMacs.containsKey(device.getAddress())) {
+            Log.d(TAG, "New device!");
+            putNotification("BluEntry Check In", "You have checked in");
+            discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
+            fbh = new FirebaseUserPeriod(studentID);
+            fbh.inRange(device.getAddress());
+        }
+    }
     public boolean isBluetoothSupported() {
         return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void startBLEscan(){
+        ScanSettings scanSettings = new ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
+                .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
+                .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
+                .setReportDelay(0L)
+                .build();
+
+        // TODO: Connect this to whitelist
+
+        String[] peripheralAddresses = new String[]{"64:CF:D9:2D:C8:90"};
+        // Build filters list
+        List<ScanFilter> filters = null;
+        if (peripheralAddresses != null) {
+            filters = new ArrayList<>();
+            for (String address : peripheralAddresses) {
+                ScanFilter filter = new ScanFilter.Builder()
+                        .setDeviceAddress(address)
+                        .build();
+                filters.add(filter);
+
+            }
+        }
         Log.d(TAG, "Start BLE scan");
-        mBluetoothAdapter.startLeScan(this);
+        mBluetoothAdapter.getBluetoothLeScanner().startScan(filters, scanSettings, scanCallback);
+        //mBluetoothAdapter.startLeScan(this);
     }
 
+    private ScanCallback scanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+            Log.d(TAG, "Got scan result " + result.getDevice().getAddress() + " " + result.getDevice().getName());
+            handleLeScanDevice(result.getDevice());
+        }
+
+        @Override
+        public void onBatchScanResults(List<ScanResult> results) {
+            super.onBatchScanResults(results);
+            for (ScanResult result : results) {
+                Log.d(TAG, "Got scan result " + result.getDevice().getAddress() + " " + result.getDevice().getName());
+                handleLeScanDevice(result.getDevice());
+            }
+        }
+
+        @Override
+        public void onScanFailed(int errorCode) {
+            super.onScanFailed(errorCode);
+        }
+    };
+
     public void stopBLEscan(){
-        mBluetoothAdapter.stopLeScan(this);
+        mBluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
     }
 
     /**
@@ -218,21 +330,21 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
         }
     }
 
-    private void putNotification(String message) {
+    private void putNotification(String title, String message) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-        String channelId = "com.hatsumi.swag";
+        String channelId = "com.hatsumi.bluentry.blenotification";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("BluEntry Check In")
+                        .setContentTitle(title)
                         .setContentText(message)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("You have checked into location"))
+                                .bigText(message))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentIntent(pendingIntent);
 
@@ -247,53 +359,13 @@ public class BeaconService extends Service implements BluetoothAdapter.LeScanCal
                 notificationManager.createNotificationChannel(channel);
             }
             Random rand = new Random();
-            notificationManager.notify(rand.nextInt(10000) /* ID of notification */, notificationBuilder.build());
+            notificationManager.notify(2, notificationBuilder.build()); //ID 2 is reserved for check-in, check-out
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
     private HashMap<String, Long> discoveredMacs = new HashMap<>();
-
-    @Override
-    public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-        if(device!=null && device.getName()!=null){
-            Log.d(TAG + " onLeScan: ", "Name: "+device.getName() + "Address: "+device.getAddress()+ "RSSI: "+rssi);
-
-            if(rssi > -90 && rssi <-1){
-
-                if (device.getName().equalsIgnoreCase("BLE_NFC")) {
-                    writeLine("Automate service BLE device in range: "+ device.getName()+ " "+rssi);
-                    if (!discoveredMacs.containsKey(device.getAddress())) {
-                        Log.d(TAG, "New device!");
-                        putNotification("You have checked in");
-                        discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
-
-                        String studentID = "1001234";
-                        fbh = new FirebaseUserPeriod(studentID);
-                        fbh.inRange(device.getAddress());
-                    }
-                }
-                /*if (device.getName().equalsIgnoreCase("NCS_Beacon") || device.getName().equalsIgnoreCase("estimote")) {
-                    //This Main looper thread is main for connect gatt, don't remove it
-                    // Although you need to pass an appropriate context getApplicationContext(),
-                    //Here if you use Looper.getMainLooper() it will stop getting callback and give internal exception fail to register //callback
-                    new Handler(getApplicationContext().getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            btGatt = device.connectGatt(getApplicationContext(), false, bleGattCallback);
-                            Log.e(TAG, "onLeScan btGatt value returning from connectGatt "+btGatt);
-                        }
-                    });
-                }*/
-                //stopBLEscan();
-            }else{
-                Log.v("Device Scan Activity", device.getAddress()+" "+"BT device is still too far - not connecting");
-            }
-
-
-        }
-    }
 
     BluetoothGattCallback bleGattCallback = new BluetoothGattCallback() {
 
