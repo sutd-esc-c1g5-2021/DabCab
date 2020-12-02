@@ -1,5 +1,6 @@
 package com.hatsumi.bluentry_declaration.ui.history;
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -195,6 +196,15 @@ public class PlaceFragment extends Fragment {
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
                 ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
+
+                //set dim background when pop up window is open
+                View container = (View) popupWindow.getContentView().getParent();
+                WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+                WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+                p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                p.dimAmount = 0.7f;
+                wm.updateViewLayout(container, p);
+
                 popup_close_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

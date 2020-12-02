@@ -2,12 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_round_corners">
+    android:background="@drawable/popup_round_corners_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="15dp"
         android:orientation="vertical">
 
         <ImageButton
@@ -20,9 +20,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About Declaration"
+            android:text="@string/period_tab"
             android:fontFamily="@font/open_sans_bold"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:gravity="center"/>
 
         <TextView
@@ -30,7 +30,10 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:fontFamily="@font/open_sans_light"
-            android:text="Some text here"/>
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="50dp"
+            android:text="@string/period_info"/>
     </LinearLayout>
 
 </LinearLayout>

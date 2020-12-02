@@ -3,6 +3,7 @@ package com.hatsumi.bluentry_declaration.ui.home;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -91,6 +92,9 @@ public class HomeFragment extends Fragment {
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+
+
+
 
                 // Open help page
                 Button helpButton = popupView.findViewById(R.id.help_button);
