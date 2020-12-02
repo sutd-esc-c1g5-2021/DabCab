@@ -115,7 +115,6 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     times = (int) dataSnapshot.getChildrenCount();
                     hm.put(dataSnapshot.getKey(), times);
-                    Log.i("DYLAN", hm.toString());
                 }
                 for (String location: hm.keySet()){
                     if (!visitedLocation.contains(location)) {
@@ -232,6 +231,7 @@ public class HomeFragment extends Fragment {
                 public void onClick(View v) {
                     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
                     ((TextView)popupView.findViewById(R.id.popup_text)).setText(visitedLocation.get(finalI));
+                    ((TextView)popupView.findViewById(R.id.popup_count)).setText(locationFreq.get(finalI).toString());
                     PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
                     popupWindow.setOutsideTouchable(true);

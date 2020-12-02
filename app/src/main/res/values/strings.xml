@@ -61,6 +61,7 @@
     <string name="enable_bluetooth_msg"><![CDATA[Please enable your bluetooth for auto check in & out]]></string>
     <string name="your_bluetooth_status">Your bluetooth status:</string>
     <string name="about_declaration">About Declaration</string>
+    <string name="chosen_popup_count">Chosen popup count</string>
 
 
     <string-array name = "date">
