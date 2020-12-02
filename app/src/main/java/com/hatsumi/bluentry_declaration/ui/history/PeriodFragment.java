@@ -122,6 +122,7 @@ public class PeriodFragment extends Fragment {
 
                     DataSnapshot snpsht: day_snpsht.getChildren()) {
                         PeriodEntry data = snpsht.getValue(PeriodEntry.class);
+                        data.setDate(day_snpsht.getKey());
                         entryPeriod.add(0, data);
                         Log.d(TAG, "Firebase data " + snpsht.getValue().toString());
                     }
@@ -151,9 +152,12 @@ public class PeriodFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 entryPeriod.clear();
                 Log.d(TAG, "Firebase data change");
+
                 for (DataSnapshot day_snpsht: snapshot.getChildren()) {
                     PeriodEntry data = day_snpsht.getValue(PeriodEntry.class);
+                    data.setDate(entryDate);
                     entryPeriod.add(0, data);
+
                     Log.d(TAG, "Firebase data " + day_snpsht.getValue().toString());
 
                 }
