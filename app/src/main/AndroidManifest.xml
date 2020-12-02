@@ -27,7 +27,7 @@
         <service android:name="com.hatsumi.bluentry_declaration.FloatingService" />
 
 
-        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen">>
+        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

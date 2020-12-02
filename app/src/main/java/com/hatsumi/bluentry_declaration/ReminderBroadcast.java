@@ -19,7 +19,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(),1, intent2, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notify")
-                .setSmallIcon(R.drawable.profile_icon)
+                .setSmallIcon(R.drawable.noti_logo)
                 .setContentTitle("Reminder!")
                 .setContentText("Hi there, please remember to log your temperature and daily declaration!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
