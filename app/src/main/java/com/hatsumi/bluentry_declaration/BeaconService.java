@@ -262,14 +262,14 @@ public class BeaconService extends Service {
 
         // TODO: Connect this to whitelist
 
-        String[] peripheralAddresses = new String[]{"64:CF:D9:2D:C8:90"};
+        String[] peripheralName = new String[]{"BLE_NFC"};
         // Build filters list
         List<ScanFilter> filters = null;
-        if (peripheralAddresses != null) {
+        if (peripheralName != null) {
             filters = new ArrayList<>();
-            for (String address : peripheralAddresses) {
+            for (String address : peripheralName) {
                 ScanFilter filter = new ScanFilter.Builder()
-                        .setDeviceAddress(address)
+                        .setDeviceName(address)
                         .build();
                 filters.add(filter);
 
