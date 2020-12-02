@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -23,14 +24,25 @@
             android:enabled="true"
             android:exported="false" />
 
+        <service android:name="com.hatsumi.bluentry_declaration.FloatingService" />
 
-        <activity android:name=".LoginPageActivity">
+
+        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait" android:theme="@style/FullScreen">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.splash.OnBoardingActivity" android:parentActivityName=".ui.splash.SplashActivity">
+
+        </activity>
+
+        <activity
+            android:name=".LoginPageActivity"
+            android:parentActivityName=".ui.splash.SplashActivity"/>
+
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".LoginPageActivity">

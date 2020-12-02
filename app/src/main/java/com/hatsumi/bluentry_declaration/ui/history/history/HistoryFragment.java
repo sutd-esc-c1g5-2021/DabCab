@@ -1,19 +1,9 @@
-package com.hatsumi.bluentry_declaration.ui.history;
+package com.hatsumi.bluentry_declaration.ui.history.history;
 
-import android.app.Activity;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.PopupWindow;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,11 +14,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.hatsumi.bluentry_declaration.R;
-import com.hatsumi.bluentry_declaration.ui.history.history.PeriodFragment;
-import com.hatsumi.bluentry_declaration.ui.history.history.PlaceFragment;
+import com.hatsumi.bluentry_declaration.ui.history.HistoryViewModel;
 
 public class HistoryFragment extends Fragment {
 
@@ -81,49 +69,6 @@ public class HistoryFragment extends Fragment {
             }
         });
         return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        // OPTIONS page
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        ImageButton profileButton = getView().findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open options page
-                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
-                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width * 0.48), WindowManager.LayoutParams.MATCH_PARENT);
-                popupWindow.setBackgroundDrawable(new BitmapDrawable());
-                popupWindow.setOutsideTouchable(true);
-                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
-
-                // Open help page
-                Button helpButton = popupView.findViewById(R.id.help_button);
-                helpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
-                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
-
-                        // Close help page
-                        Button helpBack = helpView.findViewById(R.id.help_back);
-                        helpBack.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                helpPopup.dismiss();
-                            }
-                        });
-                    }
-                });
-            }
-        });
     }
 
     public class PagerAdapter extends FragmentStatePagerAdapter {

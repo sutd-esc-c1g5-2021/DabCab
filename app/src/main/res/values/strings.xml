@@ -31,6 +31,24 @@
     <string name="location_3">Location 3</string>
     <string name="location_4">Location 4</string>
     <string name="location_5">Location 5</string>
+
+
+    <!-- For Splash Screen -->
+    <string name="nextscreen">The login screen can be put here.</string>
+    <string name="buttontext">How does BluEntry work?</string>
+    <!-- You would want these though. -->
+    <string name="bluentry">BluEntry automates all your check ins &amp; check outs.</string>
+    <string name="ttsauto">It provides ease to your tasks and sets reminders for them.</string>
+    <string name="bluetooth1">We use nearby networks and beacons to detect your device.\n\nMake sure Bluetooth is always enabled.</string>
+    <string name="location">You will need to be within 100m for BluEntry to detect your location.</string>
+    <string name="skip_button">Skip</string>
+    <string name="getstarted">Get Started</string>
+    <string name="next">Next</string>
+    <string name="go_next">Go Next</string>
+    <!-- End of Splash -->
+
+    <!-- For History -->
+    <!--Used in History Page -->
     <string name="chosen_loc_popup">Chosen Location</string>
 
     <string name="tab1Period">Period</string>

@@ -7,9 +7,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +19,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.hatsumi.bluentry_declaration.firebase.FirebaseUserPeriod;
+import com.hatsumi.bluentry_declaration.ui.splash.OnBoardingActivity;
+import com.hatsumi.bluentry_declaration.ui.splash.SplashActivity;
 
 import java.util.Calendar;
 
@@ -45,6 +50,7 @@ public class LoginPageActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,12 @@ public class LoginPageActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(overlayIntent, 0);
+        }
 
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
@@ -119,17 +131,27 @@ public class LoginPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
-                /*AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+
+
+               // Intent intent = new Intent(LoginPageActivity.this, OnBoardingActivity.class);
+               // startActivity(intent);
+
+                AndroidUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
                 AsyncTask.execute(new Runnable() {
                                       @Override
                                       public void run() {
                                           try {
-                                              Thread.sleep(5000);
+                                              String studentID = "1001234";
+                                              FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
+                                              fbh.outOfRange("64:CF:D9:2D:C8:90");
+                                              fbh.inRange("64:CF:D9:2D:C8:90");
+
                                               Log.d(TAG, "Sleep in background task complete");
 
                                               runOnUiThread(new Runnable() {
                                                   @Override
                                                   public void run() {
+
                                                       AndroidUtils.animateView(progressOverlay, View.GONE, 0, 200);
                                                       Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                                       Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
@@ -138,15 +160,13 @@ public class LoginPageActivity extends AppCompatActivity {
                                                       LoginPageActivity.this.finish();
                                                   }
                                               });
-                                          } catch (InterruptedException e) {
+                                          } catch (Exception e) {
                                               e.printStackTrace();
                                           }
 
                                       }
-                                  });*/
-                String studentID = "1001234";
-                FirebaseUserPeriod fbh = new FirebaseUserPeriod(studentID);
-                fbh.inRange("64:CF:D9:2D:C8:90");
+                                  });
+
 
             }
         });

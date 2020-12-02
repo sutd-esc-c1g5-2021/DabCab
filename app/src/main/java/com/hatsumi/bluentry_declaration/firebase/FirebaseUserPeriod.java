@@ -55,7 +55,7 @@ public class FirebaseUserPeriod {
                 for (DataSnapshot snpsht : snapshot.getChildren()) {
                     if (!whiteList.contains(snpsht.getKey())) {whiteList.add(snpsht.getKey());}
                 }
-//                Log.i(TAG, "white list is: " + whiteList);
+                Log.i(TAG, "white list is: " + whiteList);
 
                 if (whiteList.contains(macAddress)){
                     checkIfExists(macAddress);
@@ -69,6 +69,7 @@ public class FirebaseUserPeriod {
             }
         });
     }
+
 
     public void checkIfExists(String macaddr){
         checkedInRef.child(usern).child(macaddr).addListenerForSingleValueEvent( new ValueEventListener() {
@@ -145,7 +146,7 @@ public class FirebaseUserPeriod {
     }
 
 
-    public String formatTime(String dt) {
+    public static String formatTime(String dt) {
         int hour = Integer.valueOf(dt.substring(0,2));
         String ending = dt.substring(2,5) + dt.substring(9);;
         if (hour >= 22 || (hour > 12 && hour < 22)) {
