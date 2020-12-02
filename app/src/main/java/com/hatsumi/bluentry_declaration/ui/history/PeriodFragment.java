@@ -155,6 +155,7 @@ public class PeriodFragment extends Fragment {
 
                 for (DataSnapshot day_snpsht: snapshot.getChildren()) {
                     PeriodEntry data = day_snpsht.getValue(PeriodEntry.class);
+
                     data.setDate(entryDate);
                     entryPeriod.add(0, data);
 
