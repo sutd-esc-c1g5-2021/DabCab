@@ -71,6 +71,8 @@
     <string name="about_title">ABOUT</string>
     <string name="about_subheader">WHAT IS BLUENTRY?</string>
     <string name="declarations">Declarations</string>
+    <string name="about_declarations">About Declarations</string>
+    <string name="declaration_popup">Have fun colouring while you click on the \'log\' buttons to do your daily declarations and temperature takings. A reminder will be sent to you at 3.15pm in case you forget!</string>
     <string-array name = "date">
         <item>Today</item>
         <item>1 week</item>

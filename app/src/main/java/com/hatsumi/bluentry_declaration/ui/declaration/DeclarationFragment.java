@@ -1,6 +1,7 @@
 package com.hatsumi.bluentry_declaration.ui.declaration;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -73,6 +74,34 @@ public class DeclarationFragment extends Fragment {
             public void onChanged(Boolean aBoolean) {
             }
         })*/
+
+        //help pop-up
+        helpButton = root.findViewById(R.id.help);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_declaration, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
+
+                // set dim background when pop up window is open
+                View container = (View) popupWindow.getContentView().getParent();
+                WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+                WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+                p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                p.dimAmount = 0.7f;
+                wm.updateViewLayout(container, p);
+
+                popup_close_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+            }
+        });
         return root;
     }
 
@@ -98,31 +127,42 @@ public class DeclarationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // OPTIONS page
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-
-        ProfileSidebarHelper.setupProfileForView(this, width);
-
-        helpButton = getView().findViewById(R.id.help);
-        helpButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton profileButton = getView().findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.declaration_help, null, false);
-                PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                //Open options page
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width * 0.48), WindowManager.LayoutParams.MATCH_PARENT);
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 popupWindow.setOutsideTouchable(true);
-                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-                ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
-                popup_close_button.setOnClickListener(new View.OnClickListener() {
+                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
+
+                // Open help page
+                Button helpButton = popupView.findViewById(R.id.help_button);
+                helpButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        popupWindow.dismiss();
+                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
+                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
+
+                        // Close help page
+                        Button helpBack = helpView.findViewById(R.id.help_back);
+                        helpBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                helpPopup.dismiss();
+                            }
+                        });
                     }
                 });
 
-                //                // Open about page
+                // Open about page
                 Button aboutButton = popupView.findViewById(R.id.about_button);
                 aboutButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -143,6 +183,7 @@ public class DeclarationFragment extends Fragment {
                 });
             }
         });
+
 
         tts = SUTD_TTS.getSutd_tts();
 
