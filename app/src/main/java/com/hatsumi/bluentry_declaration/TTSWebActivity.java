@@ -64,6 +64,21 @@ public class TTSWebActivity extends AppCompatActivity {
 
                     return true;
                 }
+                else if (url.endsWith("tt_temperature_taking_user.aspx")) {
+                    Log.d(TAG, "Got temperature taking alert");
+                    new AlertDialog.Builder(TTSWebActivity.this)
+                            .setTitle("SUTD TTS")
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok,
+                                    new AlertDialog.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            result.confirm();
+                                            finish();
+                                        }
+                                    }).setCancelable(false).create().show();
+
+                    return true;
+                }
                 Log.d(TAG, message);
                 return super.onJsAlert(view, url, message, result);
             }

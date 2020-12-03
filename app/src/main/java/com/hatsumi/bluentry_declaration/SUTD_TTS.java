@@ -12,6 +12,9 @@ import org.jsoup.select.Elements;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,6 +143,41 @@ public class SUTD_TTS {
 
 
     }
+
+    public boolean hasCompletedDailyDeclaration() {
+        try {
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, 1);
+            Date date = cal.getTime();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
+            String todayDate = format1.format(date);
+            Log.d(TAG, "Today's date " + todayDate);
+
+            Connection.Response response = Jsoup.connect("https://tts.sutd.edu.sg/tt_daily_dec_user.aspx")
+                    .cookies(this.cookies).sslSocketFactory(socketFactory()).method(Connection.Method.GET).execute();
+
+            Log.d(TAG, response.body());
+            Document temp_history = response.parse();
+            Elements declarationElements = temp_history.select("a[href^=\"tt_daily_dec_user.aspx?formmode=update\"]");
+            for (Element element: declarationElements) {
+                String[] urlArr = element.attr("href").toString().split("=");
+                Log.d(TAG, urlArr.toString());
+                String dateStr = urlArr[urlArr.length - 1];
+                if (dateStr.startsWith(todayDate)) {
+                    Log.d(TAG, "Date match!");
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (Exception e) {
+            Log.d(TAG, "Encountered unexpected error " + e.toString());
+            return false;
+        }
+    }
+
+
 
     public boolean attemptFetchProfile() {
         return true;

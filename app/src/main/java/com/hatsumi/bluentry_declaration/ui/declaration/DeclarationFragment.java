@@ -48,7 +48,7 @@ public class DeclarationFragment extends Fragment {
     CardView daily_card_view, morning_card_view, evening_card_view;
     View progressOverlay;
 
-    TextView percentage_temp_1, percentage_temp_2;
+    TextView percentage_temp_1, percentage_temp_2, percentage_daily;
     Button log_daily_declaration, log_temperature_button1, log_temperature_button2;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,6 +69,24 @@ public class DeclarationFragment extends Fragment {
             }
         })*/
         return root;
+    }
+
+    private static final int TTSWebActivityValue = 1;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case TTSWebActivityValue: {
+                Log.d(TAG, "Got TTS Web Activity");
+                updateTTSData();
+                break;
+            }
+            default:
+                Log.d(TAG, "Invalid result code");
+                updateTTSData();
+                break;
+        }
     }
 
     @Override
@@ -125,6 +143,7 @@ public class DeclarationFragment extends Fragment {
 
         percentage_temp_1 = getView().findViewById(R.id.temp_declaration_circle1);
         percentage_temp_2 = getView().findViewById(R.id.temp_declaration_circle2);
+        percentage_daily = getView().findViewById(R.id.declaration_circle0);
 
         progressOverlay = getView().findViewById(R.id.progress_overlay);
 
@@ -136,7 +155,7 @@ public class DeclarationFragment extends Fragment {
                 Log.d(TAG, "Performing declaration for temperature (1)");
                 Intent intent = new Intent(getActivity(), TTSWebActivity.class);
                 intent.putExtra("declaration", "temperature");
-                startActivity(intent);
+                startActivityForResult(intent, TTSWebActivityValue);
             }
         });
         log_temperature_button2.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +164,7 @@ public class DeclarationFragment extends Fragment {
                 Log.d(TAG, "Performing declaration for temperature (2)");
                 Intent intent = new Intent(getActivity(), TTSWebActivity.class);
                 intent.putExtra("declaration", "temperature");
-                startActivity(intent);
+                startActivityForResult(intent, TTSWebActivityValue);
             }
         });
 
@@ -165,7 +184,7 @@ public class DeclarationFragment extends Fragment {
                 Log.d(TAG, "Performing declaration for daily (1)");
                 Intent intent = new Intent(getActivity(), TTSWebActivity.class);
                 intent.putExtra("declaration", "daily");
-                startActivity(intent);
+                startActivityForResult(intent, TTSWebActivityValue);
             }
         });
 
@@ -206,6 +225,26 @@ public class DeclarationFragment extends Fragment {
 
             }
         });
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final boolean hasCompletedDeclaration = tts.hasCompletedDailyDeclaration();
+                    Log.d(TAG, "Has completed declaration " + hasCompletedDeclaration);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            log_daily_declaration.setVisibility(View.GONE);
+                            percentage_daily.setText("100%");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
     }
 
