@@ -111,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        final Intent intent = new Intent(this, BeaconService.class);
+        ServiceCaller(intent);
+
+    }
+    private void ServiceCaller(Intent intent){
+        stopService(intent);
+
+
+        startService(intent);
     }
 
 

@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hatsumi.bluentry_declaration.R;
-
-import java.time.Period;
 import java.util.ArrayList;
 
 public class PeriodEntryAdapter extends RecyclerView.Adapter<PeriodEntryHolder> {
@@ -29,6 +27,7 @@ public class PeriodEntryAdapter extends RecyclerView.Adapter<PeriodEntryHolder> 
     public PeriodEntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.period_row, parent, false);
         return new PeriodEntryHolder(view);
+
     }
 
     @Override

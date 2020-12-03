@@ -131,10 +131,21 @@ public class DeclarationFragment extends Fragment {
         updateTTSData();
 
         log_temperature_button1.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                launchTemperatureDialog();
+                Log.d(TAG, "Performing declaration for temperature (1)");
+                Intent intent = new Intent(getActivity(), TTSWebActivity.class);
+                intent.putExtra("declaration", "temperature");
+                startActivity(intent);
+            }
+        });
+        log_temperature_button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Performing declaration for temperature (2)");
+                Intent intent = new Intent(getActivity(), TTSWebActivity.class);
+                intent.putExtra("declaration", "temperature");
+                startActivity(intent);
             }
         });
 
@@ -151,7 +162,7 @@ public class DeclarationFragment extends Fragment {
         log_daily_declaration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "Performing declaration for temperature (1)");
+                Log.d(TAG, "Performing declaration for daily (1)");
                 Intent intent = new Intent(getActivity(), TTSWebActivity.class);
                 intent.putExtra("declaration", "daily");
                 startActivity(intent);
@@ -167,6 +178,7 @@ public class DeclarationFragment extends Fragment {
     }
     private void updateTTSData() {
         //TODO: Move this into the declaration view model
+        swipeRefreshLayout.setRefreshing(true);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -181,10 +193,11 @@ public class DeclarationFragment extends Fragment {
                                 percentage_temp_2.setText("100%"); //TODO: use strings.xml
 
                             }
-                            if (declarationCount > 1) {
+                            if (declarationCount >= 1) {
                                 log_temperature_button1.setVisibility(View.GONE);
                                 percentage_temp_1.setText("100%");
                             }
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     });
                 } catch (Exception e) {

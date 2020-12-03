@@ -11,19 +11,21 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class PeriodEntryHolder extends RecyclerView.ViewHolder {
-    private TextView periodLocation, periodCheckIn, periodCheckOut;
+    private TextView periodDate,periodLocation, periodDuration;
     public PeriodEntryHolder(View itemView) {
         super(itemView);
-        periodLocation = itemView.findViewById(R.id.periodLocation);
-        periodCheckIn = itemView.findViewById(R.id.periodCheckIn);
-        periodCheckOut = itemView.findViewById(R.id.periodCheckOut);
+        periodDate = itemView.findViewById(R.id.period_date);
+        periodLocation = itemView.findViewById(R.id.period_location);
+        periodDuration = itemView.findViewById(R.id.period_duration);
     }
 
     public void setDetails(PeriodEntry entry) {
         DateFormat timeFormat = new SimpleDateFormat("M-d K:ma");
-        periodLocation.setText(entry.getLocation());
-        periodCheckIn.setText(timeFormat.format(entry.getCheckIn()));
-        periodCheckOut.setText(timeFormat.format(entry.getCheckOut()));
+        periodDate.setText(entry.getDate());
 
+
+        periodLocation.setText(entry.getPlace());
+        periodDuration.setText(entry.getDuration());
+//        periodDate.setText(dateFormat.format(row.getDate()));
     }
 }

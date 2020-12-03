@@ -1,4 +1,4 @@
-package com.hatsumi.bluentry_declaration.firebase;
+package com.hatsumi.bluentry_declaration;
 
 
 import android.content.Context;

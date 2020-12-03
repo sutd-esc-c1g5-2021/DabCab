@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BluEntry-Declaration</string>
+    <string name="app_name">BluEntry</string>
     <string name="title_home">Home</string>
     <string name="title_history">History</string>
     <string name="title_log">Log</string>
@@ -60,6 +60,11 @@
     <string name="make_easy">We make sure it\'s easy</string>
     <string name="enable_bluetooth_msg"><![CDATA[Please enable your bluetooth for auto check in & out]]></string>
     <string name="your_bluetooth_status">Your bluetooth status:</string>
+    <string name="period_tab">About Period</string>
+    <string name="period_info">Records of your check ins and outs are shown according to the date entries.</string>
+    <string name="place_tab">About Place</string>
+    <string name="place_info">Records of your check ins and outs are shown according to the places you have visited.</string>
+    <string name="history_subheading"><![CDATA[Records your check in & out]]></string>
 
 
     <string-array name = "date">

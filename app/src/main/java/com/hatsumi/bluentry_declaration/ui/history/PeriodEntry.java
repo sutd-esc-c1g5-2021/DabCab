@@ -1,39 +1,39 @@
 package com.hatsumi.bluentry_declaration.ui.history;
 
-import java.util.Date;
-
 public class PeriodEntry {
-    private String location;
-    private Date checkIn;
-    private Date checkOut;
+    private String duration;
+    private String place;
+    private String date;
 
-    public PeriodEntry(String location, Date checkIn, Date checkOut) {
-        this.location = location;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
+    public PeriodEntry() {
     }
 
-    public String getLocation() {
-        return location;
+    public PeriodEntry(String duration, String place, String date) {
+        this.duration = duration;
+        this.place = place;
+        this.date = date;
+    }
+    public String getDate() {
+        return date;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setDate(String duration) {
+        this.date = date;
     }
 
-    public Date getCheckIn() {
-        return checkIn;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setCheckIn(Date checkIn) {
-        this.checkIn = checkIn;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    public Date getCheckOut() {
-        return checkOut;
+    public String getPlace() {
+        return place;
     }
 
-    public void setCheckOut(Date checkOut) {
-        this.checkOut = checkOut;
+    public void setPlace(String place) {
+        this.place = place;
     }
 }

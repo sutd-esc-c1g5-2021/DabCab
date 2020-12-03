@@ -43,12 +43,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
     private static String TAG = LoginPageActivity.class.toString();
 
-    private void ServiceCaller(Intent intent){
-        stopService(intent);
 
-
-        startService(intent);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -56,10 +51,6 @@ public class LoginPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
-
-        final Intent intent = new Intent(this, BeaconService.class);
-        ServiceCaller(intent);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
