@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.ui.history.PeriodEntry;
 import com.hatsumi.bluentry_declaration.firebase.EntryPeriod;
 import com.hatsumi.bluentry_declaration.firebase.PeriodViewAdapter;
@@ -111,7 +112,7 @@ public class PeriodFragment extends Fragment {
         Log.d(TAG, "Setting up firebase datasource");
 
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234Period");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(SUTD_TTS.getSutd_tts().user_id + "Period");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,7 +149,7 @@ public class PeriodFragment extends Fragment {
         String dt = dateTime.format(date);
         String entryDate = dt.substring(0, dt.indexOf(","));
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234Period").child(entryDate);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(SUTD_TTS.getSutd_tts().user_id + "Period").child(entryDate);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

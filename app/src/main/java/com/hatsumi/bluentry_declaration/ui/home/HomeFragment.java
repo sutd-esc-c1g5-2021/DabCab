@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.firebase.EntryPlace;
 import com.hatsumi.bluentry_declaration.firebase.PlaceViewAdapter;
 
@@ -108,7 +109,7 @@ public class HomeFragment extends Fragment {
         freqLocationFrame.add(getView().findViewById(R.id.frame_5));
 
         HashMap<String, Integer> hm = new HashMap<>();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234"+"Place");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(SUTD_TTS.getSutd_tts().user_id +"Place");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -282,22 +283,28 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void updateBluetoothStatus(){
+    public void updateBluetoothStatus() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if (bluetoothAdapter == null) {
-            //Log.d(TAG, "Bluetooth not supported");
-            bluetoothStatus.setText("Bluetooth not supported"); //TODO put into strings.xml
-        } else if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
-            bluetoothStatus.setText(R.string.bluetoothDenied);
-        } else if (!bluetoothAdapter.isEnabled()) {
-            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
-            bluetoothStatus.setText(R.string.bluetoothOff);
-        } else {
-            bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
-            bluetoothStatus.setText(R.string.bluetoothConnected);
+        try {
+            if (bluetoothAdapter == null) {
+                //Log.d(TAG, "Bluetooth not supported");
+                bluetoothStatus.setText("Bluetooth not supported"); //TODO put into strings.xml
+            } else if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+                bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
+                bluetoothStatus.setText(R.string.bluetoothDenied);
+            } else if (!bluetoothAdapter.isEnabled()) {
+                bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
+                bluetoothStatus.setText(R.string.bluetoothOff);
+            } else {
+                bluetoothStatus = Objects.requireNonNull(getView()).findViewById(R.id.bluetoothStatus);
+                bluetoothStatus.setText(R.string.bluetoothConnected);
+            }
         }
+
+    catch (Exception e) {
+            Log.d(TAG, "Warning: The BLE might have issues");
+    }
 
         refresh(1000);          //update bluetooth status every sec
     }

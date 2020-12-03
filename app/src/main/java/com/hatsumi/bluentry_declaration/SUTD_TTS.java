@@ -33,7 +33,7 @@ public class SUTD_TTS {
         return sutd_tts;
     }
 
-    String user_id, user_password;
+    public String user_id, user_password;
     Map<String, String> cookies;
 
     private static String TAG = com.hatsumi.bluentry_declaration.SUTD_TTS.class.toString();

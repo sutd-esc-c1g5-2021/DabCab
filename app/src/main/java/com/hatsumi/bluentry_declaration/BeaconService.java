@@ -87,6 +87,7 @@ public class BeaconService extends Service {
 
         writeLine("Automate service created...");
         cachedStudentID = SUTD_TTS.getSutd_tts().user_id;
+        Log.d(TAG, "onCreate cachedStudentID " + cachedStudentID);
         getBTService();
 
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -102,11 +103,12 @@ public class BeaconService extends Service {
                     for (String macAddress: discoveredMacs.keySet()) {
                         long lastTime = discoveredMacs.get(macAddress);
                         Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
-                        if (System.currentTimeMillis() - lastTime > 60000) {
-                            Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 60 seconds");
+                        if (System.currentTimeMillis() - lastTime > 10000) {
+                            Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
                             putNotification("BluEntry Check Out", "You have checked out");
 
                             fbh = new FirebaseUserPeriod(cachedStudentID);
+                            Log.d(TAG, "checkOut Cached " + cachedStudentID);
                             fbh.outOfRange(macAddress);
 
                             //stopService(new Intent(getApplicationContext(), FloatingService.class));
@@ -316,10 +318,11 @@ public class BeaconService extends Service {
         if (!discoveredMacs.containsKey(device.getAddress())) {
             Log.d(TAG, "New device!");
             putNotification("BluEntry Check In", "You have checked in");
-            discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
-            fbh = new FirebaseUserPeriod(SUTD_TTS.getSutd_tts().user_id);
+            Log.d(TAG, "Cached student ID " + cachedStudentID);
+            fbh = new FirebaseUserPeriod(cachedStudentID);
             fbh.inRange(device.getAddress());
         }
+        discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
     }
     public boolean isBluetoothSupported() {
         return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);

@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.firebase.EntryPeriod;
 import com.hatsumi.bluentry_declaration.firebase.PeriodViewAdapter;
 
@@ -109,7 +110,7 @@ public class PlaceFragment extends Fragment {
         Log.d(TAG, "Setting up firebase datasource");
 
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234Place");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(SUTD_TTS.getSutd_tts().user_id + "Place");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

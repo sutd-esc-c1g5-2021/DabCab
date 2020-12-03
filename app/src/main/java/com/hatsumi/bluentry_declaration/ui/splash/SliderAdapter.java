@@ -22,14 +22,16 @@ public class SliderAdapter extends PagerAdapter {
         this.context = context;
     }
 
-    int images[]={
-            R.drawable.checkmark,
-            R.drawable.tts,
-            R.drawable.blu2th,
-            R.drawable.bluephonereplica
+    // Instantiate images used in splash.
+    int[] images ={
+            R.drawable.splash1,
+            R.drawable.splash2,
+            R.drawable.splash3,
+            R.drawable.splash4
     };
 
-    int descriptions[]={
+    //Instantiate all of the descriptions used in splash.
+    int[] descriptions ={
             R.string.bluentry,
             R.string.ttsauto,
             R.string.bluetooth1,
@@ -43,14 +45,14 @@ public class SliderAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == (ConstraintLayout) object;
+        return view == object;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
-        layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slides_layout,container,false);
 
         ImageView imageView =  view.findViewById(R.id.slider_image);

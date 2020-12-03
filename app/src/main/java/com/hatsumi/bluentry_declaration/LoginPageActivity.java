@@ -114,10 +114,8 @@ public class LoginPageActivity extends AppCompatActivity {
                                 }
                                 else {
                                     Log.d(TAG, "Fail in UI Thread");
-                                    Toast.makeText(LoginPageActivity.this, "Invalid", Toast.LENGTH_LONG).show();
-//testing only
-                                    Intent intent = new Intent(LoginPageActivity.this,MainActivity.class);
-                                    startActivity(intent);
+                                    Toast.makeText(LoginPageActivity.this, "Invalid Username/Password Combination", Toast.LENGTH_LONG).show();
+
                                 }
                             }
                         });
@@ -193,8 +191,8 @@ public class LoginPageActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,12);
-        calendar.set(Calendar.MINUTE,39);
+        calendar.set(Calendar.HOUR_OF_DAY,15);
+        calendar.set(Calendar.MINUTE,40);
         calendar.set(Calendar.SECOND,0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
