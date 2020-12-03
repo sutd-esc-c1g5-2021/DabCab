@@ -29,9 +29,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hatsumi.bluentry_declaration.AndroidUtils;
+import com.hatsumi.bluentry_declaration.PreferencesUtils;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.TTSWebActivity;
+import com.hatsumi.bluentry_declaration.ui.splash.SplashActivity;
 
 import static android.text.InputType.*;
 
@@ -128,6 +130,19 @@ public class DeclarationFragment extends Fragment {
                                 helpPopup.dismiss();
                             }
                         });
+                    }
+                });
+
+                //Logout Page
+                Button logoutButton = popupView.findViewById(R.id.logout_button);
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PreferencesUtils preferencesUtils = new PreferencesUtils(getContext());
+                        preferencesUtils.removeSession();
+                        Intent intent = new Intent(getActivity(), SplashActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
                     }
                 });
             }
