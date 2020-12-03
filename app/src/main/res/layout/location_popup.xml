@@ -17,6 +17,10 @@
             android:layout_gravity="right"
             android:background="@drawable/ic_baseline_close_24"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <TextView
             android:id="@+id/popup_text"
             android:layout_width="wrap_content"
@@ -25,5 +29,16 @@
             android:minHeight="?attr/actionBarSize"
             android:text="@string/chosen_loc_popup"
             android:textColor="#000000" />
+        <TextView
+            android:id="@+id/popup_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingTop="20dp"
+            android:layout_gravity="right"
+            android:minHeight="?attr/actionBarSize"
+            android:text="@string/chosen_popup_count"
+            android:textColor="#000000" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

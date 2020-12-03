@@ -26,9 +26,19 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hatsumi.bluentry_declaration.R;
+import com.hatsumi.bluentry_declaration.firebase.EntryPlace;
+import com.hatsumi.bluentry_declaration.firebase.PlaceViewAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
@@ -41,6 +51,11 @@ public class HomeFragment extends Fragment {
 
     TextView userName;
     TextView location_1_count;
+    TextView location_2_count;
+    TextView location_3_count;
+    TextView location_4_count;
+    TextView location_5_count;
+
 
     TextView location_1_text;
     TextView location_2_text;
@@ -60,8 +75,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        location_1_count = Objects.requireNonNull(getView()).findViewById(R.id.location_1_count);
         bluetoothStatus = getView().findViewById(R.id.bluetoothStatus);
+
+        ArrayList<TextView> locationFreqList = new ArrayList<>();
+        locationFreqList.add(location_1_count =(getView()).findViewById(R.id.location_1_count));
+        locationFreqList.add(location_2_count =(getView()).findViewById(R.id.location_2_count));
+        locationFreqList.add(location_3_count =(getView()).findViewById(R.id.location_3_count));
+        locationFreqList.add(location_4_count =(getView()).findViewById(R.id.location_4_count));
+        locationFreqList.add(location_5_count =(getView()).findViewById(R.id.location_5_count));
 
         ArrayList<TextView> locationText = new ArrayList<>();
         locationText.add(location_1_text = getView().findViewById(R.id.location_1_text));
@@ -77,8 +98,55 @@ public class HomeFragment extends Fragment {
         locationButtons.add(location_4_button = getView().findViewById(R.id.location_4_button));
         locationButtons.add(location_5_button = getView().findViewById(R.id.location_5_button));
 
+        ArrayList<String> visitedLocation = new ArrayList<>();              // store the top 5 visited locations
+        ArrayList<Integer> locationFreq = new ArrayList<>();
+        ArrayList<View> freqLocationFrame = new ArrayList<>();
+        freqLocationFrame.add(getView().findViewById(R.id.frame_1));
+        freqLocationFrame.add(getView().findViewById(R.id.frame_2));
+        freqLocationFrame.add(getView().findViewById(R.id.frame_3));
+        freqLocationFrame.add(getView().findViewById(R.id.frame_4));
+        freqLocationFrame.add(getView().findViewById(R.id.frame_5));
 
-        // OPTIONS page
+        HashMap<String, Integer> hm = new HashMap<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("1001234"+"Place");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int times =0;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    times = (int) dataSnapshot.getChildrenCount();
+                    hm.put(dataSnapshot.getKey(), times);
+                }
+                for (String location: hm.keySet()){
+                    if (!visitedLocation.contains(location)) {
+                        visitedLocation.add(location);
+                        locationFreq.add(hm.get(location));
+                    }
+                    if (visitedLocation.size() == 0) {                                     // if no visited locations yet
+                        location_1_text.setText("No visited locations");
+                        location_1_count.setText(" ");
+                        freqLocationFrame.get(0).setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0; i < 5; i++) {
+                        if (visitedLocation.size() > i) {                                // set frame to visible if there is valid frequently visited location
+                            locationText.get(i).setText(visitedLocation.get(i));
+                            String freq = locationFreq.get(i).toString();
+                            locationFreqList.get(i).setText(freq);
+                            freqLocationFrame.get(i).setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                }
+//                location_1_count.setText(Integer.toString(times));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+
+        //OPTIONS page
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
@@ -119,14 +187,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-        //Notification badge counter(invisible if no notification)
-        // TODO: Assign counter
-//        if (counter!=0){
-//            badgeNotification = findViewById(R.id.badge_notification);
-//            badgeNotification.setText(counter);
-//            badgeNotification.setVisibility(View.VISIBLE);
-//        }
-
         active = true;              //To enable updating of bluetooth status
         updateBluetoothStatus();
         bluetoothStatus.setOnClickListener(new View.OnClickListener() {
@@ -142,29 +202,28 @@ public class HomeFragment extends Fragment {
 
 
         //Set Freq location visibility
-        ArrayList<View> freqLocationFrame = new ArrayList<>();
-        freqLocationFrame.add(getView().findViewById(R.id.frame_1));
-        freqLocationFrame.add(getView().findViewById(R.id.frame_2));
-        freqLocationFrame.add(getView().findViewById(R.id.frame_3));
-        freqLocationFrame.add(getView().findViewById(R.id.frame_4));
-        freqLocationFrame.add(getView().findViewById(R.id.frame_5));
-        ArrayList<String> visitedLocation = new ArrayList<>();              // store the top 5 visited locations
-        visitedLocation.add("Canteen");
-        visitedLocation.add("Fablab");
-        visitedLocation.add("Class");
-        visitedLocation.add("Lt");
-        visitedLocation.add("Campus Center");
-        if (visitedLocation.size() == 0) {                                     // if no visited locations yet
-            location_1_text.setText("No visited locations");
-            location_1_count.setText(" ");
-            freqLocationFrame.get(0).setVisibility(View.VISIBLE);
-        }
-        for (int i = 0; i < 5; i++) {
-            if (visitedLocation.size() > i) {                                // set frame to visible if there is valid frequently visited location
-                locationText.get(i).setText(visitedLocation.get(i));
-                freqLocationFrame.get(i).setVisibility(View.VISIBLE);
-            }
-        }
+//        ArrayList<View> freqLocationFrame = new ArrayList<>();
+//        freqLocationFrame.add(getView().findViewById(R.id.frame_1));
+//        freqLocationFrame.add(getView().findViewById(R.id.frame_2));
+//        freqLocationFrame.add(getView().findViewById(R.id.frame_3));
+//        freqLocationFrame.add(getView().findViewById(R.id.frame_4));
+//        freqLocationFrame.add(getView().findViewById(R.id.frame_5));
+//        visitedLocation.add("Canteen");
+//        visitedLocation.add("Fablab");
+//        visitedLocation.add("Class");
+//        visitedLocation.add("Lt");
+//        visitedLocation.add("Campus Center");
+//        if (visitedLocation.size() == 0) {                                     // if no visited locations yet
+//            location_1_text.setText("No visited locations");
+//            location_1_count.setText(" ");
+//            freqLocationFrame.get(0).setVisibility(View.VISIBLE);
+//        }
+//        for (int i = 0; i < 5; i++) {
+//            if (visitedLocation.size() > i) {                                // set frame to visible if there is valid frequently visited location
+//                locationText.get(i).setText(visitedLocation.get(i));
+//                freqLocationFrame.get(i).setVisibility(View.VISIBLE);
+//            }
+//        }
 
 
         // Popup for frequently visited location
@@ -176,6 +235,7 @@ public class HomeFragment extends Fragment {
                 public void onClick(View v) {
                     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup, null, false);
                     ((TextView)popupView.findViewById(R.id.popup_text)).setText(visitedLocation.get(finalI));
+                    ((TextView)popupView.findViewById(R.id.popup_count)).setText(locationFreq.get(finalI).toString());
                     PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
                     popupWindow.setOutsideTouchable(true);

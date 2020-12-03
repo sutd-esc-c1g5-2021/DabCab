@@ -51,6 +51,8 @@ public class DeclarationFragment extends Fragment {
     TextView percentage_temp_1, percentage_temp_2, percentage_daily;
     Button log_daily_declaration, log_temperature_button1, log_temperature_button2;
 
+    Button helpButton;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         declarationViewModel =
@@ -126,6 +128,24 @@ public class DeclarationFragment extends Fragment {
                                 helpPopup.dismiss();
                             }
                         });
+                    }
+                });
+            }
+        });
+
+        helpButton = getView().findViewById(R.id.help);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.declaration_help, null, false);
+                PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                ImageButton popup_close_button = (ImageButton) popupView.findViewById(R.id.popup_close);
+                popup_close_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
                     }
                 });
             }
