@@ -60,6 +60,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/about_button"
             android:layout_width="76dp"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_line_bottom"

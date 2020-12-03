@@ -110,6 +110,26 @@ public class DeclarationFragment extends Fragment {
                         });
                     }
                 });
+
+                //                // Open about page
+                Button aboutButton = popupView.findViewById(R.id.about_button);
+                aboutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        View aboutView = LayoutInflater.from(getActivity()).inflate(R.layout.about_page, null, false);
+                        PopupWindow aboutPopup = new PopupWindow(aboutView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                        aboutPopup.showAtLocation(aboutView, Gravity.CENTER, 0, 0);
+
+                        // Close about page
+                        Button aboutBack = aboutView.findViewById(R.id.about_back);
+                        aboutBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                aboutPopup.dismiss();
+                            }
+                        });
+                    }
+                });
             }
         });
 

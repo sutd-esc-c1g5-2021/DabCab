@@ -65,6 +65,8 @@
     <string name="place_tab">About Place</string>
     <string name="place_info">Records of your check ins and outs are shown according to the places you have visited.</string>
     <string name="history_subheading"><![CDATA[Records your check in & out]]></string>
+    <string name="about_title">ABOUT</string>
+    <string name="about_subheader">WHAT IS BLUENTRY?</string>
 
 
     <string-array name = "date">

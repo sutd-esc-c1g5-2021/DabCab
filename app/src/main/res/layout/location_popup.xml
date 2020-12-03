@@ -25,5 +25,18 @@
             android:minHeight="?attr/actionBarSize"
             android:text="@string/chosen_loc_popup"
             android:textColor="#000000" />
+
+        <LinearLayout
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popupRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
