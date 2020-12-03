@@ -39,18 +39,19 @@ public class LoginPageActivity extends AppCompatActivity {
     Button fake_login_button;
 
 
+    private PreferencesUtils preferencesUtils;
+
     View progressOverlay;
 
     private static String TAG = LoginPageActivity.class.toString();
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
+
+        preferencesUtils = new PreferencesUtils(LoginPageActivity.this);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.FOREGROUND_SERVICE}, PackageManager.PERMISSION_GRANTED); // Ask the user to give permission
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
@@ -83,6 +84,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
         SUTD_TTS sutd_tts = SUTD_TTS.getSutd_tts();
 
+
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +104,7 @@ public class LoginPageActivity extends AppCompatActivity {
                                 if (result) {
                                     Log.d(TAG, "Success in UI thread");
                                     Toast.makeText(LoginPageActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                    preferencesUtils.saveSession(sutd_tts.user_id, sutd_tts.user_password);
                                     Intent intent = new Intent(LoginPageActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME); //Ensure that user cannot press back button
                                     startActivity(intent);

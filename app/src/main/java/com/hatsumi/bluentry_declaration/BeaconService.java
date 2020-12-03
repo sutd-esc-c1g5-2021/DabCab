@@ -68,7 +68,9 @@ public class BeaconService extends Service {
     private BluetoothAdapter mBluetoothAdapter;
     // Object of the current firebase instance
     FirebaseUserPeriod fbh = null;
-    private static String studentID = "1001234";
+
+    private String cachedStudentID;
+
 
     static final String ACTION_LEFT_APP = "com.hatsumi.beaconservice.left_app";
 
@@ -80,6 +82,7 @@ public class BeaconService extends Service {
             startForeground(1, new Notification());
 
         writeLine("Automate service created...");
+        cachedStudentID = SUTD_TTS.getSutd_tts().user_id;
         getBTService();
         ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
 
@@ -93,8 +96,8 @@ public class BeaconService extends Service {
                         if (System.currentTimeMillis() - lastTime > 10000) {
                             Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
                             putNotification("BluEntry Check Out", "You have checked out");
-                            String studentID = "1001234";
-                            fbh = new FirebaseUserPeriod(studentID);
+
+                            fbh = new FirebaseUserPeriod(cachedStudentID);
                             fbh.outOfRange(macAddress);
 
                             stopService(new Intent(getApplicationContext(), FloatingService.class));
@@ -242,7 +245,7 @@ public class BeaconService extends Service {
             Log.d(TAG, "New device!");
             putNotification("BluEntry Check In", "You have checked in");
             discoveredMacs.put(device.getAddress(), System.currentTimeMillis());
-            fbh = new FirebaseUserPeriod(studentID);
+            fbh = new FirebaseUserPeriod(SUTD_TTS.getSutd_tts().user_id);
             fbh.inRange(device.getAddress());
         }
     }

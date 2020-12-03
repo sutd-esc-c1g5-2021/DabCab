@@ -45,7 +45,7 @@ public class GetFromFirebaseActivity extends AppCompatActivity {
     PlaceViewAdapter placeViewAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {    
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_user_period);
 
@@ -74,8 +74,6 @@ public class GetFromFirebaseActivity extends AppCompatActivity {
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Call a method to get the student id
-        studentID = "1001234";
         fbh = new FirebaseUserPeriod(studentID);
 
         // All these buttons are for mockup and should be replaced with original way of entering/exiting

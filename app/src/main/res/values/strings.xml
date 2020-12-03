@@ -13,8 +13,8 @@
     <string name="daily_declaration">Daily Declaration</string>
     <string name="reminder_1">Reminder all day</string>
     <string name="temperature_taking">Temperature Taking</string>
-    <string name="morning">Morning</string>
-    <string name="evening">Evening</string>
+    <string name="morning">1st Declaration</string>
+    <string name="evening">2nd Declaration</string>
     <string name="LOG">LOG</string>
 
 
