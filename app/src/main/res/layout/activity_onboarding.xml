@@ -18,11 +18,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <!-- Yes there are probably better functions to use than
+        this version of Switch-->
         <Switch
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Switch" />
+            android:text="Switching"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </androidx.viewpager.widget.ViewPager>
 
     <RelativeLayout
@@ -33,6 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <!-- This button should be invisible by default! -->
         <Button
             android:id="@+id/getstarted"
             android:layout_width="wrap_content"
@@ -46,18 +50,18 @@
             android:onClick="getStarted"
             android:text="@string/getstarted"
             android:textColor="#FFFFFF"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
-            android:paddingBottom="20dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
             android:id="@+id/dots" />
-
 
         <Button
             android:id="@+id/skip_button"
@@ -66,7 +70,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:alpha="0.5"
-            android:background="@color/splash_background_colour"
+            android:background="@android:color/transparent"
             android:fontFamily="@font/open_sans"
             android:onClick="skip"
             android:padding="10dp"

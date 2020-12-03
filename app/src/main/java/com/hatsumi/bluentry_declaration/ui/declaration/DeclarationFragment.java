@@ -33,6 +33,7 @@ import com.hatsumi.bluentry_declaration.PreferencesUtils;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.TTSWebActivity;
+import com.hatsumi.bluentry_declaration.ui.ProfileSidebarHelper;
 import com.hatsumi.bluentry_declaration.ui.splash.SplashActivity;
 
 import static android.text.InputType.*;
@@ -102,51 +103,8 @@ public class DeclarationFragment extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-        ImageButton profileButton = getView().findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open options page
-                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.profile_popup, null, false);
-                PopupWindow popupWindow = new PopupWindow(popupView, (int) (width * 0.48), WindowManager.LayoutParams.MATCH_PARENT);
-                popupWindow.setBackgroundDrawable(new BitmapDrawable());
-                popupWindow.setOutsideTouchable(true);
-                popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
 
-                // Open help page
-                Button helpButton = popupView.findViewById(R.id.help_button);
-                helpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        View helpView = LayoutInflater.from(getActivity()).inflate(R.layout.help_page, null, false);
-                        PopupWindow helpPopup = new PopupWindow(helpView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                        helpPopup.showAtLocation(helpView, Gravity.CENTER, 0, 0);
-
-                        // Close help page
-                        Button helpBack = helpView.findViewById(R.id.help_back);
-                        helpBack.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                helpPopup.dismiss();
-                            }
-                        });
-                    }
-                });
-
-                //Logout Page
-                Button logoutButton = popupView.findViewById(R.id.logout_button);
-                logoutButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        PreferencesUtils preferencesUtils = new PreferencesUtils(getContext());
-                        preferencesUtils.removeSession();
-                        Intent intent = new Intent(getActivity(), SplashActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
-            }
-        });
+        ProfileSidebarHelper.setupProfileForView(this, width);
 
         helpButton = getView().findViewById(R.id.help);
         helpButton.setOnClickListener(new View.OnClickListener() {

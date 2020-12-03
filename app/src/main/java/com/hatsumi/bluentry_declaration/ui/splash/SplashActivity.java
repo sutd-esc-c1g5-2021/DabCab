@@ -39,12 +39,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         // get the logo
-        logo = findViewById(R.id.bluelogo);
+        logo = findViewById(R.id.whitelogo);
 
         //animations
         sideAnim = AnimationUtils.loadAnimation(this,R.anim.side_anim);
 
-        logo.setAnimation(sideAnim);
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {

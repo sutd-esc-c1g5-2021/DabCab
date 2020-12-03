@@ -1,23 +1,27 @@
 package com.hatsumi.bluentry_declaration.ui.splash;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+//import android.view.WindowManager; //unused import from deprecated NEXT function.
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import com.hatsumi.bluentry_declaration.R;
 
 import com.hatsumi.bluentry_declaration.LoginPageActivity;
-import com.hatsumi.bluentry_declaration.R;
+
 
 public class OnBoardingActivity extends AppCompatActivity {
 
@@ -30,12 +34,10 @@ public class OnBoardingActivity extends AppCompatActivity {
     Animation animation;
     int currentPos;
 
-    SharedPreferences sharedPreferences;
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_onboarding);
 
         //Hooks
@@ -64,12 +66,14 @@ public class OnBoardingActivity extends AppCompatActivity {
         // both methods go to the login screen aka "second activity", if you want to make them redirect to other places you can of course
     }
 
-    public void next(View view) {
+    // Deprecated next button code. RIP. Left in case someone really needs a next button.
+    /*public void next(View view) {
         viewPager.setCurrentItem(currentPos + 1);
     }
+    */
 
 
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void addDots(int position) {
 
         dots = new TextView[4];
@@ -79,13 +83,14 @@ public class OnBoardingActivity extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("•"));
             dots[i].setTextSize(35);
+            dots[i].setGravity(Gravity.CENTER);
 
             dotsLayout.addView(dots[i]);
         }
 
         if (dots.length > 0) {
-            dots[position].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-            // you can change the primary colour in styles.xml if you want another color, or just use a hex code
+            dots[position].setTextColor(getResources().getColor(R.color.bluEntry_main));
+            // you can change the primary colour in styles.xml or add a new colour in colors.xml
         }
 
     }
@@ -96,6 +101,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         @Override
         public void onPageSelected(int position) {
             addDots(position);

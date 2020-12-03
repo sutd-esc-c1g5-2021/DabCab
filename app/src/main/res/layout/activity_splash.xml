@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/thelogocolourthatisslightlydifferentfromthemaincolour"
     android:orientation="vertical">
 
-    <!-- TODO: replace the drawable entry with the ACTUAL logo -->
     <ImageView
-        android:id="@+id/bluelogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bluentrytemp2"
+        android:id="@+id/whitelogo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="BluEntry Logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.42"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/whitelogocombined" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
