@@ -17,8 +17,10 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
@@ -71,6 +73,8 @@ public class BeaconService extends Service {
 
     private String cachedStudentID;
 
+    private boolean hasBluetoothError = false;
+
 
     static final String ACTION_LEFT_APP = "com.hatsumi.beaconservice.left_app";
 
@@ -84,12 +88,17 @@ public class BeaconService extends Service {
         writeLine("Automate service created...");
         cachedStudentID = SUTD_TTS.getSutd_tts().user_id;
         getBTService();
+
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
+
         ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
 
         // This schedule a runnable task every 2 minutes
         scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
                 public void run() {
                     Log.d(TAG, "Running the check BLE runnable");
+                    checkBleErrors();
                     for (String macAddress: discoveredMacs.keySet()) {
                         long lastTime = discoveredMacs.get(macAddress);
                         Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
@@ -100,7 +109,7 @@ public class BeaconService extends Service {
                             fbh = new FirebaseUserPeriod(cachedStudentID);
                             fbh.outOfRange(macAddress);
 
-                            stopService(new Intent(getApplicationContext(), FloatingService.class));
+                            //stopService(new Intent(getApplicationContext(), FloatingService.class));
 
                             discoveredMacs.remove(macAddress);
 
@@ -113,6 +122,17 @@ public class BeaconService extends Service {
     private NotificationCompat.Builder notificationBuilder;
     private Notification notification;
 
+
+    private void checkBleErrors() {
+        if (hasBluetoothError) {
+            Log.d(TAG, "had a bluetooth error, will retry scanning");
+            // Attempt to re-initialize Bluetooth
+            getBTService();
+            if (mBluetoothAdapter!=null && mBluetoothAdapter.isEnabled()){
+                startBLEscan();
+            }
+        }
+    }
 
     private static final String NOTIFICATION_CHANNEL_ID = "com.hatsumi.beaconservice";
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -139,11 +159,13 @@ public class BeaconService extends Service {
     private void showBluetoothError() {
         Log.d(TAG, "Error with Bluetooth");
 
+        hasBluetoothError = true;
+
         NotificationManager mNotificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder.setContentTitle("Oh no! BluEntry is not working well");
         notificationBuilder.setContentText("Please turn on your Bluetooth");
-        mNotificationManager.notify(2, notificationBuilder.build());
+        mNotificationManager.notify(3, notificationBuilder.build());
     }
 
 
@@ -162,11 +184,11 @@ public class BeaconService extends Service {
                     //Start the FloatingService
                     Log.d(TAG, "Got the left app");
                     if (fbh != null)
-                        startService(new Intent(getApplicationContext(), FloatingService.class));
+                        //startService(new Intent(getApplicationContext(), FloatingService.class));
                     break;
                 case MSG_ENTERED_APP:
                     Log.d(TAG, "Got the enntered app");
-                        stopService(new Intent(getApplicationContext(), FloatingService.class));
+                        //stopService(new Intent(getApplicationContext(), FloatingService.class));
                     break;
 
                 default:
@@ -239,6 +261,33 @@ public class BeaconService extends Service {
         return mBluetoothAdapter;
     }
 
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        Log.d(TAG, "Bluetooth is off");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        showBluetoothError();
+                        Log.d(TAG, "Bluetooth is turning off");
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        Log.d(TAG, "Bluetooth is on");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        Log.d(TAG, "Bluetooth is turning on");
+                        break;
+                }
+            }
+        }
+    };
+
 
     private void handleLeScanDevice(BluetoothDevice device) {
         if (!discoveredMacs.containsKey(device.getAddress())) {
@@ -255,6 +304,7 @@ public class BeaconService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void startBLEscan(){
+        hasBluetoothError = false;
         ScanSettings scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)

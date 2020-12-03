@@ -1,5 +1,6 @@
 package com.hatsumi.bluentry_declaration;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,6 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Intent intent = new Intent(this, BeaconService.class);
         ServiceCaller(intent);
+
 
     }
     private void ServiceCaller(Intent intent){
