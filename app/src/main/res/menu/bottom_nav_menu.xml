@@ -14,6 +14,6 @@
     <item
         android:id="@+id/navigation_declaration"
         android:icon="@drawable/ic_clipboard_black"
-        android:title="@string/title_declaration" />
+        android:title="@string/declarations" />
 
 </menu>
