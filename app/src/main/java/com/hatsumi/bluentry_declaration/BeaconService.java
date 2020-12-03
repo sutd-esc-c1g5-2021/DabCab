@@ -102,8 +102,8 @@ public class BeaconService extends Service {
                     for (String macAddress: discoveredMacs.keySet()) {
                         long lastTime = discoveredMacs.get(macAddress);
                         Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
-                        if (System.currentTimeMillis() - lastTime > 10000) {
-                            Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
+                        if (System.currentTimeMillis() - lastTime > 60000) {
+                            Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 60 seconds");
                             putNotification("BluEntry Check Out", "You have checked out");
 
                             fbh = new FirebaseUserPeriod(cachedStudentID);
@@ -147,7 +147,7 @@ public class BeaconService extends Service {
         manager.createNotificationChannel(chan);
         notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.drawable.bluetooth_rounded_corner)
+                .setSmallIcon(R.drawable.ic_logo)
                 .setContentTitle("App is running in background")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
@@ -157,15 +157,38 @@ public class BeaconService extends Service {
 
 
     private void showBluetoothError() {
-        Log.d(TAG, "Error with Bluetooth");
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = "com.hatsumi.bluentry.ble_errornotification";
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Bluetooth Error")
+                        .setContentText("Please turn on your Bluetooth")
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("Please turn on your Bluetooth"))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent);
 
-        hasBluetoothError = true;
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationManager mNotificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationBuilder.setContentTitle("Oh no! BluEntry is not working well");
-        notificationBuilder.setContentText("Please turn on your Bluetooth");
-        mNotificationManager.notify(3, notificationBuilder.build());
+        try{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(channelId,
+                        "com.hatsumi.channel",
+                        NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+            }
+            Random rand = new Random();
+            notificationManager.notify(2, notificationBuilder.build()); //ID 2 is reserved for check-in, check-out
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
