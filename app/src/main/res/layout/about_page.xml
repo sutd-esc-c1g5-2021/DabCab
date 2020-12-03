@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBFBFB">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/about_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="?attr/editTextBackground"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="center"
+            android:text="@string/about_title"
+            android:textSize="24sp" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="@string/about_subheader"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="27dp"
+        android:paddingRight="27dp"
+        android:fontFamily="@font/open_sans"
+        android:text="BluEntry is a smart app dedicated to SUTD family to automate your SafeEntry's check ins &amp; check outs."
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:paddingLeft="27dp"
+        android:paddingRight="27dp"
+        android:fontFamily="@font/open_sans"
+        android:text="BluEntry also provides a convenient and interactive platform for you to submit your daily declarations and temperature taking which includes reminders. "
+        android:textSize="15sp"/>
+
+
+
+</LinearLayout>

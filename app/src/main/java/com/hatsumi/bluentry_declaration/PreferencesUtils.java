@@ -23,11 +23,11 @@ public class PreferencesUtils {
     }
 
     public String getUsername(){
-        return sharedPreferences.getString(PREF_KEY_USERNAME, null);
+        return sharedPreferences.getString(PREF_KEY_USERNAME, "Invalid");
     }
 
     public String getPassword() {
-        return sharedPreferences.getString(PREF_KEY_PASSWORD, null);
+        return sharedPreferences.getString(PREF_KEY_PASSWORD, "Invalid");
     }
 
     public void removeSession(){

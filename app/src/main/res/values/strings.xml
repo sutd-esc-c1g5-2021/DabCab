@@ -68,6 +68,9 @@
     <string name="history_subheading"><![CDATA[Records your check in & out]]></string>
     <string name="about_declaration">About Declaration</string>
     <string name="chosen_popup_count">Chosen popup count</string>
+    <string name="about_title">ABOUT</string>
+    <string name="about_subheader">WHAT IS BLUENTRY?</string>
+    <string name="declarations">Declarations</string>
     <string-array name = "date">
         <item>Today</item>
         <item>1 week</item>

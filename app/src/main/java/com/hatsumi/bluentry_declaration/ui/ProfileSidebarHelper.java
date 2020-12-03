@@ -56,7 +56,7 @@ public class ProfileSidebarHelper {
                 aboutButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        View aboutView = LayoutInflater.from(getActivity()).inflate(R.layout.about_page, null, false);
+                        View aboutView = LayoutInflater.from(fragment.getActivity()).inflate(R.layout.about_page, null, false);
                         PopupWindow aboutPopup = new PopupWindow(aboutView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
                         aboutPopup.showAtLocation(aboutView, Gravity.CENTER, 0, 0);
 
