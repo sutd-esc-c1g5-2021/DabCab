@@ -288,8 +288,10 @@ public class DeclarationFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            log_daily_declaration.setVisibility(View.GONE);
-                            percentage_daily.setText("100%");
+                            if (hasCompletedDeclaration) {
+                                log_daily_declaration.setVisibility(View.GONE);
+                                percentage_daily.setText("100%");
+                            }
                         }
                     });
                 } catch (Exception e) {

@@ -36,7 +36,7 @@ public class LoginPageActivity extends AppCompatActivity {
     TextView title_log;
     TextView title_in;
     Button login_button;
-    Button fake_login_button;
+    //Button fake_login_button;
 
 
     private PreferencesUtils preferencesUtils;
@@ -73,7 +73,6 @@ public class LoginPageActivity extends AppCompatActivity {
         title_log = findViewById(R.id.title_log);
         title_in = findViewById(R.id.title_in);
         login_button = findViewById(R.id.login_button);
-        fake_login_button = findViewById(R.id.fake_login);
 
         progressOverlay = findViewById(R.id.progress_overlay);
 
@@ -126,7 +125,7 @@ public class LoginPageActivity extends AppCompatActivity {
             }
         });
 
-        fake_login_button.setOnClickListener(new View.OnClickListener() {
+       /* fake_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Simulated login");
@@ -168,7 +167,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
     }
 
@@ -191,8 +190,8 @@ public class LoginPageActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,15);
-        calendar.set(Calendar.MINUTE,40);
+        calendar.set(Calendar.HOUR_OF_DAY,11);
+        calendar.set(Calendar.MINUTE,55 );
         calendar.set(Calendar.SECOND,0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }

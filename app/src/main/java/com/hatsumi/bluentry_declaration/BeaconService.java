@@ -103,7 +103,7 @@ public class BeaconService extends Service {
                     for (String macAddress: discoveredMacs.keySet()) {
                         long lastTime = discoveredMacs.get(macAddress);
                         Log.d(TAG, "Current mac " + macAddress + " " + lastTime);
-                        if (System.currentTimeMillis() - lastTime > 10000) {
+                        if (System.currentTimeMillis() - lastTime > 5000) {
                             Log.d(TAG, "Beacon " + macAddress + " has been out of range for > 10 seconds");
                             putNotification("BluEntry Check Out", "You have checked out");
 
