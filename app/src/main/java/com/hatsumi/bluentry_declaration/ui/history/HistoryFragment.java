@@ -1,6 +1,7 @@
 package com.hatsumi.bluentry_declaration.ui.history;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -23,11 +24,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.hatsumi.bluentry_declaration.LoginPageActivity;
 import com.hatsumi.bluentry_declaration.R;
+
+import java.util.Objects;
 
 public class HistoryFragment extends Fragment {
 
     private HistoryViewModel historyViewModel;
+
+    public final static String LOGINSTATUS = "LOGINSTATUS";
 
 
 
@@ -136,6 +142,17 @@ public class HistoryFragment extends Fragment {
                                 aboutPopup.dismiss();
                             }
                         });
+                    }
+                });
+                // Logout button
+                Button logoutButton = popupView.findViewById(R.id.logout_button);
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent decToLogin = new Intent(getActivity(), LoginPageActivity.class);
+                        decToLogin.putExtra(LOGINSTATUS, 0);
+                        Objects.requireNonNull(getActivity()).finish();
+                        startActivity(decToLogin);
                     }
                 });
             }

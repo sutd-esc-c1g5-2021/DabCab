@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hatsumi.bluentry_declaration.LoginPageActivity;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.firebase.EntryPlace;
@@ -43,6 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
+    public final static String LOGINSTATUS = "LOGINSTATUS";
+
     private static final String TAG = HomeFragment.class.toString();
 
     static boolean active = false;
@@ -163,8 +166,6 @@ public class HomeFragment extends Fragment {
                 popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
 
 
-
-
                 // Open help page
                 Button helpButton = popupView.findViewById(R.id.help_button);
                 helpButton.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +186,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                //                // Open about page
+                // Open about page
                 Button aboutButton = popupView.findViewById(R.id.about_button);
                 aboutButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -202,6 +203,17 @@ public class HomeFragment extends Fragment {
                                 aboutPopup.dismiss();
                             }
                         });
+                    }
+                });
+                // Logout button
+                Button logoutButton = popupView.findViewById(R.id.logout_button);
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent decToLogin = new Intent(getActivity(), LoginPageActivity.class);
+                        decToLogin.putExtra(LOGINSTATUS, 0);
+                        Objects.requireNonNull(getActivity()).finish();
+                        startActivity(decToLogin);
                     }
                 });
             }

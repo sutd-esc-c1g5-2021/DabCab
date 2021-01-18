@@ -148,7 +148,7 @@ public class SUTD_TTS {
         try {
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, 1);
+            //cal.add(Calendar.DATE, 1);
             Date date = cal.getTime();
             SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
             String todayDate = format1.format(date);

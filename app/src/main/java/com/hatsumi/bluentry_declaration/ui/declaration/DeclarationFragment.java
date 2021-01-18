@@ -30,12 +30,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hatsumi.bluentry_declaration.AndroidUtils;
+import com.hatsumi.bluentry_declaration.LoginPageActivity;
 import com.hatsumi.bluentry_declaration.PreferencesUtils;
 import com.hatsumi.bluentry_declaration.R;
 import com.hatsumi.bluentry_declaration.SUTD_TTS;
 import com.hatsumi.bluentry_declaration.TTSWebActivity;
 import com.hatsumi.bluentry_declaration.ui.ProfileSidebarHelper;
 import com.hatsumi.bluentry_declaration.ui.splash.SplashActivity;
+
+import java.util.Objects;
 
 import static android.text.InputType.*;
 
@@ -56,6 +59,8 @@ public class DeclarationFragment extends Fragment {
     Button log_daily_declaration, log_temperature_button1, log_temperature_button2;
 
     Button helpButton;
+
+    public final static String LOGINSTATUS = "LOGINSTATUS";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -142,6 +147,7 @@ public class DeclarationFragment extends Fragment {
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.showAtLocation(popupView, Gravity.LEFT, 0, 0);
 
+
                 // Open help page
                 Button helpButton = popupView.findViewById(R.id.help_button);
                 helpButton.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +185,18 @@ public class DeclarationFragment extends Fragment {
                                 aboutPopup.dismiss();
                             }
                         });
+                    }
+                });
+
+                // Logout button
+                Button logoutButton = popupView.findViewById(R.id.logout_button);
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent decToLogin = new Intent(getActivity(), LoginPageActivity.class);
+                        decToLogin.putExtra(LOGINSTATUS, 0);
+                        Objects.requireNonNull(getActivity()).finish();
+                        startActivity(decToLogin);
                     }
                 });
             }
