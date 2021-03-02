@@ -22,4 +22,10 @@
         android:name="com.hatsumi.bluentry_declaration.ui.declaration.DeclarationFragment"
         android:label="@string/title_declaration"
         tools:layout="@layout/fragment_declaration" />
+
+    <fragment
+        android:id="@+id/navigation_scanning_mode"
+        android:name="com.hatsumi.bluentry_declaration.ui.ScanningModeFragment"
+        android:label="Scanning Mode"
+        tools:layout="@layout/fragment_scanningmode" />
 </navigation>

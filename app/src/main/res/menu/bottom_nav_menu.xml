@@ -12,6 +12,11 @@
         android:title="@string/declarations" />
 
     <item
+        android:id="@+id/navigation_scanning_mode"
+        android:icon="@drawable/ic_clipboard_black"
+        android:title="Scanning Mode" />
+
+    <item
         android:id="@+id/navigation_history"
         android:icon="@drawable/ic_history_black"
         android:title="@string/title_history" />

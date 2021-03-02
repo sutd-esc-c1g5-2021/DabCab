@@ -184,7 +184,11 @@ public class SUTD_TTS {
     }
 
     public boolean attemptLogin() {
+        return true; //TODO: Fix the attemptLogin to connect to Firebase
+        /*
         try {
+
+
 
             Connection.Response response = Jsoup.connect("https://tts.sutd.edu.sg/tt_login.aspx?formmode=expire").sslSocketFactory(socketFactory()).execute();
 
@@ -224,7 +228,7 @@ public class SUTD_TTS {
             Log.d(TAG, "Got exception");
             Log.d(TAG, e.toString());
             return false;
-        }
+        }*/
 
     }
 }
