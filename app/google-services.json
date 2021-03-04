@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:797300240600:android:9367a5c7a4350ff12967ad",
         "android_client_info": {
-          "package_name": "com.hatsumi.bluentry_declaration"
+          "package_name": "com.cabdab.wifi"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "797300240600-f0hipql7k281snp5gvqpm3r5fe9mruv9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hatsumi.bluentry_declaration",
+            "package_name": "com.cabdab.wifi",
             "certificate_hash": "3e48e3b5d27eaeb78625ccfb1ba2d07f23d4a29f"
           }
         },

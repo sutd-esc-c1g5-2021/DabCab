@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BluEntry</string>
+    <string name="app_name">CabDab</string>
     <string name="title_home">Home</string>
     <string name="title_history">History</string>
     <string name="title_log">Log</string>
@@ -35,12 +35,12 @@
 
     <!-- For Splash Screen -->
     <string name="nextscreen">The login screen can be put here.</string>
-    <string name="buttontext">How does BluEntry work?</string>
+    <string name="buttontext">How does CabDab work?</string>
     <!-- You would want these though. -->
-    <string name="bluentry">BluEntry automates all your check ins &amp; check outs.</string>
+    <string name="bluentry">CabDab automates all your check ins &amp; check outs.</string>
     <string name="ttsauto">It provides ease to your tasks and sets reminders for them.</string>
     <string name="bluetooth1">We use nearby networks and beacons to detect your device.\n\nMake sure Bluetooth is always enabled.</string>
-    <string name="location">You will need to be within 100m for BluEntry to detect your location.</string>
+    <string name="location">You will need to be within 100m for CabDab to detect your location.</string>
     <string name="skip_button">Skip</string>
     <string name="getstarted">Get Started</string>
     <string name="next">Next</string>

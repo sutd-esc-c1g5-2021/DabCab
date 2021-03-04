@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.hatsumi.bluentry_declaration.ui.home.HomeFragment"
+        android:name="com.cabdab.wifi.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="com.hatsumi.bluentry_declaration.ui.history.HistoryFragment"
+        android:name="com.cabdab.wifi.ui.WifiFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/navigation_declaration"
-        android:name="com.hatsumi.bluentry_declaration.ui.declaration.DeclarationFragment"
+        android:name="com.cabdab.wifi.ui.declaration.DeclarationFragment"
         android:label="@string/title_declaration"
         tools:layout="@layout/fragment_declaration" />
 
     <fragment
         android:id="@+id/navigation_scanning_mode"
-        android:name="com.hatsumi.bluentry_declaration.ui.ScanningModeFragment"
+        android:name="com.cabdab.wifi.ui.ScanningModeFragment"
         android:label="Scanning Mode"
         tools:layout="@layout/fragment_scanningmode" />
 </navigation>

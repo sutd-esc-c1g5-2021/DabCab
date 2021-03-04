@@ -63,7 +63,7 @@
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:fontFamily="@font/open_sans"
-        android:text="The functionalities offered in BluEntry app require access to your device operating system functions to work fully. This is to ensure that you will be able to check-in/check-out automatically"
+        android:text="The functionalities offered in CabDab app require access to your device operating system functions to work fully. This is to ensure that you will be able to check-in/check-out automatically"
         android:textSize="15sp"/>
 
 </LinearLayout>

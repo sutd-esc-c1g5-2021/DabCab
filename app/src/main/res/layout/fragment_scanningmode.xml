@@ -122,24 +122,31 @@
         <Button
             android:id="@+id/start_collect"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Start" />
 
         <Button
             android:id="@+id/pick_map_button"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Load Map" />
 
     </LinearLayout>
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <com.hatsumi.bluentry_declaration.ui.mapview.PinView
+        <Button
+            android:id="@+id/wifi_debug"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="WiFi Debug" />
+        <com.cabdab.wifi.ui.mapview.PinView
             android:id="@+id/mapImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

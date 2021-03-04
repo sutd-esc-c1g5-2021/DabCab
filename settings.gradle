@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "BluEntry-Declaration"
+rootProject.name = "CabDab-Declaration"

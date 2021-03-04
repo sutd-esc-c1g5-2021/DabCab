@@ -43,7 +43,7 @@
         android:paddingLeft="27dp"
         android:paddingRight="27dp"
         android:fontFamily="@font/open_sans"
-        android:text="BluEntry is a smart app dedicated to SUTD family to automate your SafeEntry's check ins &amp; check outs."
+        android:text="CabDab is a smart app dedicated to SUTD family to automate your SafeEntry's check ins &amp; check outs."
         android:textSize="15sp"/>
 
     <TextView
@@ -53,7 +53,7 @@
         android:paddingLeft="27dp"
         android:paddingRight="27dp"
         android:fontFamily="@font/open_sans"
-        android:text="BluEntry also provides a convenient and interactive platform for you to submit your daily declarations and temperature taking which includes reminders. "
+        android:text="CabDab also provides a convenient and interactive platform for you to submit your daily declarations and temperature taking which includes reminders. "
         android:textSize="15sp"/>
 
 

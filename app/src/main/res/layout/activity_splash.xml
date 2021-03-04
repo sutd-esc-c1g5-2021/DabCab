@@ -10,7 +10,7 @@
         android:id="@+id/whitelogo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:contentDescription="BluEntry Logo"
+        android:contentDescription="CabDab Logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.42"
