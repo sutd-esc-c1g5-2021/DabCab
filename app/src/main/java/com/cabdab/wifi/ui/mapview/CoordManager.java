@@ -10,15 +10,15 @@ public class CoordManager {
      */
     private float stride;
 
-    private float pixelWidth;
-    private float pixelHeight;
-    private float widthScale;
-    private float heightScale;
+    public float pixelWidth;
+    public float pixelHeight;
+    public float widthScale;
+    public float heightScale;
 
-    private PointF currentSCoord;  //coordinate on Source picture
-    private PointF currentTCoord;  //coordinate on True coordination
+    public PointF currentSCoord;  //coordinate on Source picture
+    public PointF currentTCoord;  //coordinate on True coordination
 
-    CoordManager(float width, float height, float pixelWidth, float pixelHeight) {
+    public CoordManager(float width, float height, float pixelWidth, float pixelHeight) {
         this.pixelHeight = pixelHeight;
         this.pixelWidth = pixelWidth;
 
@@ -38,7 +38,7 @@ public class CoordManager {
     /**
      * @param tapSCoord the tap point
      */
-    void moveBySingleTap(PointF tapSCoord) {
+    public void moveBySingleTap(PointF tapSCoord) {
         float deltaX = tapSCoord.x - currentSCoord.x;
         float deltaY = tapSCoord.y - currentSCoord.y;
 
