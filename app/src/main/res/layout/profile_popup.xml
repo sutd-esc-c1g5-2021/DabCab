@@ -108,30 +108,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Built by"
+            android:text="ESC 2021"
             android:textColor="#000000"
             android:textSize="11sp" />
-
-        <ImageButton
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="@android:dimen/app_icon_size"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/ic_logo" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Presca  Dylan  Hatsumi"
-            android:textColor="#000000"
-            android:textSize="11sp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Terence  Joon Kang"
-            android:textColor="#000000"
-            android:textSize="11sp" />
-
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

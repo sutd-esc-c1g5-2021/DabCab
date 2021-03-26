@@ -17,11 +17,6 @@
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" />
 
-    <fragment
-        android:id="@+id/navigation_declaration"
-        android:name="com.cabdab.wifi.ui.declaration.DeclarationFragment"
-        android:label="@string/title_declaration"
-        tools:layout="@layout/fragment_declaration" />
 
     <fragment
         android:id="@+id/navigation_scanning_mode"

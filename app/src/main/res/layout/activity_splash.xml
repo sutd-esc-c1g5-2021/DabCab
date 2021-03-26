@@ -4,20 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/thelogocolourthatisslightlydifferentfromthemaincolour"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/whitelogo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:contentDescription="CabDab Logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.42"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/whitelogocombined" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:orientation="vertical"/>

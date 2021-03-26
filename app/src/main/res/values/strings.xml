@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CabDab</string>
     <string name="title_home">Home</string>
-    <string name="title_history">History</string>
+    <string name="title_history">WiFi Debugging</string>
     <string name="title_log">Log</string>
     <string name="title_in">In</string>
     <string name="username">Username</string>
@@ -37,10 +37,10 @@
     <string name="nextscreen">The login screen can be put here.</string>
     <string name="buttontext">How does CabDab work?</string>
     <!-- You would want these though. -->
-    <string name="bluentry">CabDab automates all your check ins &amp; check outs.</string>
-    <string name="ttsauto">It provides ease to your tasks and sets reminders for them.</string>
-    <string name="bluetooth1">We use nearby networks and beacons to detect your device.\n\nMake sure Bluetooth is always enabled.</string>
-    <string name="location">You will need to be within 100m for CabDab to detect your location.</string>
+    <string name="bluentry">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="ttsauto">Fusce ut massa sit amet odio eleifend auctor et id ex.</string>
+    <string name="bluetooth1">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</string>
+    <string name="location">Pellentesque urna diam, egestas a tellus quis, suscipit bibendum dui. Integer at suscipit neque.</string>
     <string name="skip_button">Skip</string>
     <string name="getstarted">Get Started</string>
     <string name="next">Next</string>
@@ -57,8 +57,8 @@
     <string name="place_text">This is Place</string>
     <string name="question_mark">\?</string>
     <string name="popup_period">Help text for Period</string>
-    <string name="make_easy">We make sure it\'s easy</string>
-    <string name="enable_bluetooth_msg"><![CDATA[Please enable your bluetooth for auto check in & out]]></string>
+    <string name="make_easy">Home Screen</string>
+    <string name="enable_bluetooth_msg"><![CDATA[Please enable your bluetooth & WiFi for location ranging]]></string>
     <string name="your_bluetooth_status">Your bluetooth status:</string>
 
     <string name="period_tab">About Period</string>

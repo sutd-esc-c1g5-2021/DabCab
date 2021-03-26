@@ -7,11 +7,6 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_declaration"
-        android:icon="@drawable/ic_clipboard_black"
-        android:title="@string/declarations" />
-
-    <item
         android:id="@+id/navigation_scanning_mode"
         android:icon="@drawable/ic_clipboard_black"
         android:title="Scanning Mode" />
