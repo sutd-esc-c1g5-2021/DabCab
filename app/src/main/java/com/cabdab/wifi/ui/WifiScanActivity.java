@@ -81,9 +81,30 @@ public class WifiScanActivity extends AppCompatActivity {
         Toast.makeText(this, "Scanning started",Toast.LENGTH_SHORT).show();
     }
 
+    public static float wifi1(int x, int y){
+        double result = 10-Math.sqrt(Math.pow(x-3,2)+Math.pow(y-7,2));
+        System.out.println("\nResult 1:"+result);
+        if (result<1){result=0;}
+        return (float)result;
+    }
+    public static float wifi2(int x, int y){
+        double result = 10-Math.sqrt(Math.pow(x-8,2)+Math.pow(y-2,2));
+        System.out.println("Result 2:"+result);
+        if (result<1){result=0;}
+        return (float)result;
+    }
+    public static float wifi3(int x, int y){
+        double result = 10-Math.sqrt(Math.pow(x-0,2)+Math.pow(y-0,2));
+        System.out.println("Result 3:"+result);
+        if (result<1){result=0;}
+        return (float)result;
+    }
+
     BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            ArrayList<Float> rssiArrayList = new ArrayList<>();
+
             List<ScanResult> results = wifiManager.getScanResults();
             // TODO: add handling for scanFailure();
             unregisterReceiver(this);
@@ -95,6 +116,13 @@ public class WifiScanActivity extends AppCompatActivity {
                 String ssid = scanResult.SSID;
                 String bssid = scanResult.BSSID;
                 int rssi = scanResult.level;
+                /*
+                int yIn = yS + ((yE - yS) * i / intervals);
+                int xIn = xS + ((xE - xS) * i / intervals);
+                */
+
+
+
                 String rssiVal  = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
                 /* THIS USES A DEPRECATED VERSION OF CALCULATE SIGNAL LEVEL BUT NOT USING IT CAUSES CRASHES*/
 
