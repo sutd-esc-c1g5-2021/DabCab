@@ -22,7 +22,7 @@ public class CoordManagerTest {
     @Test
     public void testCoordManager() {
         // Initialize CoordManager
-       CoordManager coordManager = new CoordManager(100, 100, 50, 50;
+       CoordManager coordManager = new CoordManager(100, 100, 50, 50);
         PointF testPoint = new PointF(1.0f, 1.0f);
         coordManager.moveBySingleTap(testPoint);
         System.out.println(testPoint);
