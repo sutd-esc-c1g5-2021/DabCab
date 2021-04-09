@@ -116,12 +116,6 @@ public class WifiScanActivity extends AppCompatActivity {
                 String ssid = scanResult.SSID;
                 String bssid = scanResult.BSSID;
                 int rssi = scanResult.level;
-                /*
-                int yIn = yS + ((yE - yS) * i / intervals);
-                int xIn = xS + ((xE - xS) * i / intervals);
-                */
-
-
 
                 String rssiVal  = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
                 /* THIS USES A DEPRECATED VERSION OF CALCULATE SIGNAL LEVEL BUT NOT USING IT CAUSES CRASHES*/

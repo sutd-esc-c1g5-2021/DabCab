@@ -14,21 +14,27 @@ import com.cabdab.wifi.R;
 
 
 import java.util.List;
-
+import android.util.Log;
 
 public class PinView extends SubsamplingScaleImageView {
 
+    public static String TAG = "PinView";
+
     private final Paint paint = new Paint();
     private final PointF vPin = new PointF();
+    private final PointF ePin = new PointF();
 
     private PointF currentPoint;
+    private PointF endPoint;
     private List<PointF> fingerprintPoints;
 
     private Bitmap currentPin;
     private Bitmap completedPin;
     private Bitmap beaconPin;
+    private Bitmap endPin;
 
     private CoordManager coordManager;
+    private CoordManager coordManager_end;
 
     public PinView(Context context) {
         this(context, null);
@@ -49,6 +55,10 @@ public class PinView extends SubsamplingScaleImageView {
         float h = (density / 1500f) * currentPin.getHeight();
         currentPin = Bitmap.createScaledBitmap(currentPin, (int) w, (int) h, true);
 
+        endPin = BitmapFactory.decodeResource(this.getResources(), R.drawable.location_marker_end);
+        endPin = Bitmap.createScaledBitmap(endPin, (int) w, (int) h, true);
+
+
         completedPin = BitmapFactory.decodeResource(this.getResources(), R.drawable.completed_point);
         w = (density / 6000) * completedPin.getWidth();
         h = (density / 6000f) * completedPin.getHeight();
@@ -63,22 +73,49 @@ public class PinView extends SubsamplingScaleImageView {
         invalidate();
     }
 
+    public void setCurrentTPosition_end(PointF p) {
+        coordManager_end.setCurrentTCoord(p);
+        this.endPoint = coordManager_end.getCurrentSCoord();
+        invalidate();
+    }
+
+
+    public PointF getCurrentTCoord_end() {
+        return coordManager_end.getCurrentTCoord();
+    }
+
     public PointF getCurrentTCoord() {
         return coordManager.getCurrentTCoord();
     }
 
     public void initialCoordManager(float width, float height) {
         this.coordManager = new CoordManager(width, height, this.getSWidth(), this.getSHeight());
+        this.coordManager_end = new CoordManager(width, height, this.getSWidth(), this.getSHeight());
     }
 
     public void setStride(float stride) {
         this.coordManager.setStride(stride);
+        this.coordManager_end.setStride(stride);
     }
 
-    public void moveBySingleTap(MotionEvent e) {
-        PointF sCoord = this.viewToSourceCoord(e.getX(), e.getY());
-        coordManager.moveBySingleTap(sCoord);
-        this.setCurrentTPosition(coordManager.getCurrentTCoord());
+    public void moveBySingleTap(MotionEvent e, int mode) {
+        Log.d(TAG, "Moving by single tap");
+        if (mode == 0) {
+            Log.d(TAG, "Moving the start position");
+            //Setting the start position
+            PointF sCoord = this.viewToSourceCoord(e.getX(), e.getY());
+            coordManager.moveBySingleTap(sCoord);
+            this.setCurrentTPosition(coordManager.getCurrentTCoord());
+        }
+        else {
+            //Setting the end position
+            Log.d(TAG, "Moving the end position");
+            PointF sCoord = this.viewToSourceCoord(e.getX(), e.getY());
+            Log.d(TAG, "The new position of end Point " + coordManager_end.getCurrentTCoord());
+            coordManager_end.moveBySingleTap(sCoord);
+            this.setCurrentTPosition_end(coordManager_end.getCurrentTCoord());
+            Log.d(TAG, "The new position of end Point " + coordManager_end.getCurrentTCoord());
+        }
     }
 
     public PointF getEventPosition(MotionEvent e) {
@@ -101,7 +138,16 @@ public class PinView extends SubsamplingScaleImageView {
             sourceToViewCoord(currentPoint, vPin);
             float vX = vPin.x - (currentPin.getWidth() / 2);
             float vY = vPin.y - (currentPin.getHeight() / 2);
+            Log.d(TAG, "Going to draw the startpoint");
             canvas.drawBitmap(currentPin, vX, vY, paint);
+        }
+
+        if (endPoint != null && endPin != null) {
+            sourceToViewCoord(endPoint, ePin);
+            float eX = ePin.x - (endPin.getWidth() / 2);
+            float eY = ePin.y - (endPin.getHeight() / 2);
+            Log.d(TAG, "Going to draw the endpoint");
+            canvas.drawBitmap(endPin, eX, eY, paint);
         }
 
         if (fingerprintPoints != null && completedPin != null)

@@ -1,6 +1,7 @@
 package com.cabdab.wifi.ui.mapview;
 
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class CoordManager {
@@ -18,6 +19,7 @@ public class CoordManager {
     public PointF currentSCoord;  //coordinate on Source picture
     public PointF currentTCoord;  //coordinate on True coordination
 
+
     public CoordManager(float width, float height, float pixelWidth, float pixelHeight) {
         this.pixelHeight = pixelHeight;
         this.pixelWidth = pixelWidth;
@@ -31,6 +33,8 @@ public class CoordManager {
         this.stride = 1;
     }
 
+    public static String TAG = "CoordManager";
+
     void setStride(float stride) {
         this.stride = stride;
     }
@@ -41,6 +45,8 @@ public class CoordManager {
     public void moveBySingleTap(PointF tapSCoord) {
         float deltaX = tapSCoord.x - currentSCoord.x;
         float deltaY = tapSCoord.y - currentSCoord.y;
+
+        Log.d(TAG, "moveBySingleTap: Stride " + stride);
 
         float moveX = Math.abs(deltaX) >= Math.abs(deltaY) ? (deltaX > 0 ? 1 : -1) * stride * widthScale : 0;
         float moveY = Math.abs(deltaX) >= Math.abs(deltaY) ? 0 : (deltaY > 0 ? 1 : -1) * stride * heightScale;
