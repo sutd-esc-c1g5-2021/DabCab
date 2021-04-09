@@ -92,6 +92,30 @@ public class ScanningModeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         myDialog.dismiss();//dismiss dialog
+
+
+                        //Wifi Scanning Complete
+
+                        wifiKNN.endRun((int)ScanningModeFragment.this.xEnd, (int)ScanningModeFragment.this.yEnd);
+
+                        // 6) After finishing all the runs, Normalize data before saving (Implement saving soon)
+                        wifiKNN.normalizeData();
+
+                        // Saving Instructions Here:
+                        // S1) Ensure floorplan filename is set. Can be used to load floorplan file later on.
+                        wifiKNN.setFloorplan("building2lv3");
+
+                        // S2) Get CSV formatted String using .toCSV() method
+                        String testedString = wifiKNN.toCSV();
+
+                        // S3) Save to file using Static Method
+                        // Note that filename does not have .csv format inside. It is provided in the method.
+                        com.example.selflib.wifi_algo.SaveLoadCSV.saveCSV("test",testedString);
+
+                        // Loading Instructions Here:
+                        // L1) Call static CSV loading method before starting Testing Mode
+                        String receivedString =  com.example.selflib.wifi_algo.SaveLoadCSV.loadCSV("test");
+
                         //Reset to go back to the set starting point
                         ScanningModeFragment.this.POINT_MODE = 0; //Set back to start
                         ScanningModeFragment.this.startWifiScanButton.setVisibility(View.INVISIBLE);
@@ -117,9 +141,29 @@ public class ScanningModeFragment extends Fragment {
 
         return root;
     }
+    private float xStart, yStart, xEnd, yEnd;
+    private int timeTaken;
+    private int currentTime;
+
+    private com.example.selflib.wifi_algo.DataSet wifiKNN = new com.example.selflib.wifi_algo.DataSet();
+
+
+    private void setupWifiScanning() {
+        xStart = ScanningModeFragment.this.mapView.getCurrentTCoord().x;
+        yStart = ScanningModeFragment.this.mapView.getCurrentTCoord().y;
+        xEnd = ScanningModeFragment.this.mapView.getCurrentTCoord_end().x;
+        yEnd = ScanningModeFragment.this.mapView.getCurrentTCoord_end().y;
+        timeTaken = 5;
+        currentTime = 0;
+        wifiKNN.startRun((int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().x , (int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().y);
+
+
+    }
+
     private WifiManager wifiManager;
     private void scanWifi(){
         //textView.setText(R.string.eeeee);
+        setupWifiScanning();
         Log.i("scanWifi", "Hello");
         getActivity().registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
@@ -255,6 +299,7 @@ public class ScanningModeFragment extends Fragment {
         }
     }
 
+
     BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -290,28 +335,10 @@ public class ScanningModeFragment extends Fragment {
 
             // Sequence for Getting Current Position:
             // 1) Create new dataset holder in the activity
-            com.example.selflib.wifi_algo.DataSet tested = new com.example.selflib.wifi_algo.DataSet();
-
-            // 2) Start a new run when user wants to start mapping
-            // Pass xStart and yStart
-
-            float xStart = ScanningModeFragment.this.mapView.getCurrentTCoord().x;
-            float yStart = ScanningModeFragment.this.mapView.getCurrentTCoord().y;
-            float xEnd = ScanningModeFragment.this.mapView.getCurrentTCoord_end().x;
-            float yEnd = ScanningModeFragment.this.mapView.getCurrentTCoord_end().y;
-
-            tested.startRun((int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().x , (int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().y);
-
+            wifiKNN.insert(apData);
+            Log.d(TAG, "Wifi scanning complete, going to scan again");
             wifiManager.startScan();
 
-            int timeTaken = 5;
-
-            for (int i = 0; i<timeTaken; i++){
-                int currentX = (int) Math.round(xStart + i*(xEnd - xStart)/timeTaken);
-                int currentY = (int) Math.round(yStart + i*(yEnd - yStart)/timeTaken);
-                tested.insert(apData);
-            }
-            Log.d(TAG, "Wifi scanning complete");
 
         }
 
