@@ -1,5 +1,7 @@
 package com.example.selflib.wifi_algo;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,9 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SaveLoadCSV {
-    public static void saveCSV(String filename, String content){
+
+
+    public static void saveCSV(Context context, String filename, String content){
         try{
-            File file = new File(filename+".csv");
+            File file = new File(context.getFilesDir(), filename);
             if(!file.exists()){
                 file.createNewFile();
             }
@@ -26,12 +30,13 @@ public class SaveLoadCSV {
             e.printStackTrace();
         }
     }
-    public static String loadCSV(String filename){
+    public static String loadCSV(Context context, String filename){
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
         String readLine;
         try{
-            br = new BufferedReader(new FileReader(filename+".csv"));
+            File file = new File(context.getFilesDir(), filename);
+            br = new BufferedReader(new FileReader(file));
             while((readLine = br.readLine())!=null){
                 sb.append(readLine);
                 sb.append("\n");

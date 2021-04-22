@@ -56,6 +56,11 @@ public class ScanningModeFragment extends Fragment {
 
     private Button setEndPosButton;
     private Button startWifiScanButton;
+    private Button completedMappingModeButton;
+    private Button testModeButton;
+
+
+    public com.example.selflib.wifi_algo.KNNTool knnTool;
 
     private static String TAG = ScanningModeFragment.class.toString();
 
@@ -75,12 +80,64 @@ public class ScanningModeFragment extends Fragment {
             }
         });
 
+        this.testModeButton = root.findViewById(R.id.testModeButton);
+
+        this.testModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ProgressDialog myDialog = new ProgressDialog(getContext());
+                myDialog.setMessage("WiFi Location in progress (testing mode)");
+                myDialog.setCancelable(false);
+                myDialog.show();
+                scanMode = 1;
+                Log.d(TAG, "Going to do the testing mode scan");
+                scanWifi();
+            }
+        });
+
+        this.completedMappingModeButton = root.findViewById(R.id.completedMappingMode);
+
         strideEditText = root.findViewById(R.id.stride_length);
         this.setEndPosButton = root.findViewById(R.id.setEndPos);
 
         Button pickMapButton = root.findViewById(R.id.pick_map_button);
 
         this.startWifiScanButton = root.findViewById(R.id.startWifiScanning);
+
+        this.completedMappingModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 6) After finishing all the runs, Normalize data before saving (Implement saving soon)
+                wifiKNN.normalizeData();
+
+                // Saving Instructions Here:
+                // S1) Ensure floorplan filename is set. Can be used to load floorplan file later on.
+                wifiKNN.setFloorplan("building2lv3");
+
+                // S2) Get CSV formatted String using .toCSV() method
+                String testedString = wifiKNN.toCSV();
+
+                // S3) Save to file using Static Method
+                // Note that filename does not have .csv format inside. It is provided in the method.
+                com.example.selflib.wifi_algo.SaveLoadCSV.saveCSV(getContext(),"test.csv",testedString);
+
+                // Loading Instructions Here:
+                // L1) Call static CSV loading method before starting Testing Mode
+                String receivedString =  com.example.selflib.wifi_algo.SaveLoadCSV.loadCSV(getContext(), "test");
+
+                //Testing Mode Continues Here
+
+                // T1) Initialize KNNTool (Can be done earlier if you want)
+                ScanningModeFragment.this.knnTool = new com.example.selflib.wifi_algo.KNNTool();
+
+                // T2) Pass Normalized data into KNN testset when entering Testing Mode
+                // Ideally this would be done after loading up the DataSet file from Local/Online storage
+                // A new DataSet would also be created before this to load the data, but since we're simulating, it is skipped
+                ScanningModeFragment.this.knnTool.trainKNN(wifiKNN.getNormalMACAddr(), wifiKNN.getNormalData());
+
+            }
+        });
 
         this.startWifiScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,32 +150,16 @@ public class ScanningModeFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         myDialog.dismiss();//dismiss dialog
 
-
                         //Wifi Scanning Complete
 
                         wifiKNN.endRun((int)ScanningModeFragment.this.xEnd, (int)ScanningModeFragment.this.yEnd);
 
-                        // 6) After finishing all the runs, Normalize data before saving (Implement saving soon)
-                        wifiKNN.normalizeData();
-
-                        // Saving Instructions Here:
-                        // S1) Ensure floorplan filename is set. Can be used to load floorplan file later on.
-                        wifiKNN.setFloorplan("building2lv3");
-
-                        // S2) Get CSV formatted String using .toCSV() method
-                        String testedString = wifiKNN.toCSV();
-
-                        // S3) Save to file using Static Method
-                        // Note that filename does not have .csv format inside. It is provided in the method.
-                        com.example.selflib.wifi_algo.SaveLoadCSV.saveCSV("test",testedString);
-
-                        // Loading Instructions Here:
-                        // L1) Call static CSV loading method before starting Testing Mode
-                        String receivedString =  com.example.selflib.wifi_algo.SaveLoadCSV.loadCSV("test");
-
                         //Reset to go back to the set starting point
                         ScanningModeFragment.this.POINT_MODE = 0; //Set back to start
                         ScanningModeFragment.this.startWifiScanButton.setVisibility(View.INVISIBLE);
+
+                        //Move the new starting point to be nearby
+
 
                         initStartPoint();
 
@@ -256,6 +297,7 @@ public class ScanningModeFragment extends Fragment {
 
                     initStartPoint();
 
+
                 } else {
                     Log.d(TAG, "No map found");
                 }
@@ -299,46 +341,82 @@ public class ScanningModeFragment extends Fragment {
         }
     }
 
+    private int scanMode = 0; //0 = training, 1 = testing
 
     BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<ScanResult> results = wifiManager.getScanResults();
-            // TODO: add handling for scanFailure();
-            getActivity().unregisterReceiver(this);
-            Log.i("wifiReceiver", "onReceive");
 
-            HashMap<String, Double> apData = new HashMap<>();
+            if (scanMode == 0) {
+                List<ScanResult> results = wifiManager.getScanResults();
+                // TODO: add handling for scanFailure();
+                getActivity().unregisterReceiver(this);
+                Log.i("wifiReceiver", "onReceive");
 
-            for (ScanResult scanResult: results) {
-                Log.i("wifiReceiver", "results get");
-                //Map<String, String> datum = new HashMap<String, String>(2);
-                String ssid = scanResult.SSID;
-                String bssid = scanResult.BSSID;
+                HashMap<String, Double> apData = new HashMap<>();
 
-               try {
-                   int rssi = scanResult.level;
-                   String rssiVal = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
-                   Log.d(TAG, "SSID: " + ssid + ", BSSID: " + bssid + ", RSSI: " + rssiVal);
+                for (ScanResult scanResult: results) {
+                    Log.i("wifiReceiver", "results get");
+                    //Map<String, String> datum = new HashMap<String, String>(2);
+                    String ssid = scanResult.SSID;
+                    String bssid = scanResult.BSSID;
 
-                   apData.put(bssid, (double)rssi);
+                    try {
+                        int rssi = scanResult.level;
+                        String rssiVal = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
+                        Log.d(TAG, "SSID: " + ssid + ", BSSID: " + bssid + ", RSSI: " + rssiVal);
 
-                   /* THIS USES A DEPRECATED VERSION OF CALCULATE SIGNAL LEVEL BUT NOT USING IT CAUSES CRASHES*/
+                        apData.put(bssid, (double)rssi);
+
+                        /* THIS USES A DEPRECATED VERSION OF CALCULATE SIGNAL LEVEL BUT NOT USING IT CAUSES CRASHES*/
 
 
-               }
-               catch (Exception e) {
-                   Log.d(TAG, "Error parsing the scan results " + e.toString());
-               }
+                    }
+                    catch (Exception e) {
+                        Log.d(TAG, "Error parsing the scan results " + e.toString());
+                    }
+
+                }
+
+                // Sequence for Getting Current Position:
+                // 1) Create new dataset holder in the activity
+                wifiKNN.insert(apData);
+                Log.d(TAG, "Wifi scanning complete, going to scan again");
+                wifiManager.startScan();
+
 
             }
+            else {
+                List<ScanResult> results = wifiManager.getScanResults();
+                // TODO: add handling for scanFailure();
+                getActivity().unregisterReceiver(this);
+                Log.i("wifiReceiver", "onReceive for testing mode");
 
-            // Sequence for Getting Current Position:
-            // 1) Create new dataset holder in the activity
-            wifiKNN.insert(apData);
-            Log.d(TAG, "Wifi scanning complete, going to scan again");
-            wifiManager.startScan();
+                HashMap<String, Double> apData = new HashMap<>();
 
+                for (ScanResult scanResult : results) {
+                    Log.i("wifiReceiver", "testingMode result");
+                    //Map<String, String> datum = new HashMap<String, String>(2);
+                    String ssid = scanResult.SSID;
+                    String bssid = scanResult.BSSID;
+
+                    try {
+                        int rssi = scanResult.level;
+                        String rssiVal = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
+                        Log.d(TAG, "SSID: " + ssid + ", BSSID: " + bssid + ", RSSI: " + rssiVal);
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "Warning: Unknown exception");
+                    }
+                }
+
+                Log.d(TAG, "Trying to perform KNN inference");
+                ScanningModeFragment.this.knnTool.testKNN(apData);
+                int[] coord = ScanningModeFragment.this.knnTool.getKNN();
+
+                Log.d(TAG, "Coordinates " + coord[0] + " : " + coord[1]);
+                ScanningModeFragment.this.mapView.setCurrentTPosition(new PointF(coord[0], coord[1]));
+            }
 
         }
 
