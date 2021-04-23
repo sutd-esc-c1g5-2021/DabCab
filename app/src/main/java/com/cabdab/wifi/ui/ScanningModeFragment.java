@@ -110,11 +110,11 @@ public class ScanningModeFragment extends Fragment {
 
                         // S3) Save to file using Static Method
                         // Note that filename does not have .csv format inside. It is provided in the method.
-                        com.example.selflib.wifi_algo.SaveLoadCSV.saveCSV("test",testedString);
+                        SaveLoadCSV.saveCSV("test",testedString);
 
                         // Loading Instructions Here:
                         // L1) Call static CSV loading method before starting Testing Mode
-                        String receivedString =  com.example.selflib.wifi_algo.SaveLoadCSV.loadCSV("test");
+                        String receivedString =  SaveLoadCSV.loadCSV("test");
 
                         //Reset to go back to the set starting point
                         ScanningModeFragment.this.POINT_MODE = 0; //Set back to start
@@ -145,7 +145,7 @@ public class ScanningModeFragment extends Fragment {
     private int timeTaken;
     private int currentTime;
 
-    private com.example.selflib.wifi_algo.DataSet wifiKNN = new com.example.selflib.wifi_algo.DataSet();
+    private DataSet wifiKNN = new DataSet();
 
 
     private void setupWifiScanning() {

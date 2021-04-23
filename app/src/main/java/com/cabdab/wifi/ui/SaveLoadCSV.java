@@ -1,4 +1,4 @@
-package com.example.selflib.wifi_algo;
+package com.cabdab.wifi.ui;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
