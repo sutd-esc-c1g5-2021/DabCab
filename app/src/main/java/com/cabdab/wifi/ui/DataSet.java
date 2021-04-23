@@ -22,7 +22,7 @@ public class DataSet {
     //Start a new run
     public void startRun(int x,int y){
         System.out.println("\nRun Start Request Received\n");
-        if (this.activeRun!=null){
+        if (this.activeRun==null){
             this.activeRun = new RunData(x,y);
         }
         else{

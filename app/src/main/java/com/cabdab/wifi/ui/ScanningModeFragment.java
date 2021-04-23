@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -64,6 +66,8 @@ public class ScanningModeFragment extends Fragment {
 
     private static String TAG = ScanningModeFragment.class.toString();
 
+    private ProgressDialog wifiLocationProgressDialog;
+
 
     public final static String LOGINSTATUS = "LOGINSTATUS";
 
@@ -82,14 +86,16 @@ public class ScanningModeFragment extends Fragment {
 
         this.testModeButton = root.findViewById(R.id.testModeButton);
 
+
+
         this.testModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ProgressDialog myDialog = new ProgressDialog(getContext());
-                myDialog.setMessage("WiFi Location in progress (testing mode)");
-                myDialog.setCancelable(false);
-                myDialog.show();
+                wifiLocationProgressDialog = new ProgressDialog(getContext());
+                wifiLocationProgressDialog.setMessage("WiFi Location in progress (testing mode)");
+                wifiLocationProgressDialog.setCancelable(false);
+                wifiLocationProgressDialog.show();
                 scanMode = 1;
                 Log.d(TAG, "Going to do the testing mode scan");
                 scanWifi();
@@ -142,6 +148,7 @@ public class ScanningModeFragment extends Fragment {
         this.startWifiScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setupWifiScanning();
                 ProgressDialog myDialog = new ProgressDialog(getContext());
                 myDialog.setMessage("WiFi Scanning in Progress.. Please walk to end destination");
                 myDialog.setCancelable(false);
@@ -152,7 +159,17 @@ public class ScanningModeFragment extends Fragment {
 
                         //Wifi Scanning Complete
 
-                        wifiKNN.endRun((int)ScanningModeFragment.this.xEnd, (int)ScanningModeFragment.this.yEnd);
+                        requestedOngoingScanning = false;
+
+                        Log.d(TAG, "Wifi scanning complete ");
+
+                        if (wifiKNN.getActiveRun() != null) {
+                            wifiKNN.endRun((int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().x, (int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().y);
+                        }
+                        else {
+                            Log.d(TAG, "Warning: Active run is null");
+                        }
+
 
                         //Reset to go back to the set starting point
                         ScanningModeFragment.this.POINT_MODE = 0; //Set back to start
@@ -166,7 +183,7 @@ public class ScanningModeFragment extends Fragment {
                     }
                 });
                 myDialog.show();
-                scanWifi();
+
             }
         });
 
@@ -186,6 +203,8 @@ public class ScanningModeFragment extends Fragment {
     private int timeTaken;
     private int currentTime;
 
+    private boolean requestedOngoingScanning = false;
+
     private com.example.selflib.wifi_algo.DataSet wifiKNN = new com.example.selflib.wifi_algo.DataSet();
 
 
@@ -196,7 +215,9 @@ public class ScanningModeFragment extends Fragment {
         yEnd = ScanningModeFragment.this.mapView.getCurrentTCoord_end().y;
         timeTaken = 5;
         currentTime = 0;
-        wifiKNN.startRun((int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().x , (int)ScanningModeFragment.this.mapView.getCurrentTCoord_end().y);
+        requestedOngoingScanning = true;
+        scanWifi();
+        wifiKNN.startRun((int)ScanningModeFragment.this.mapView.getCurrentTCoord().x , (int)ScanningModeFragment.this.mapView.getCurrentTCoord().y);
 
 
     }
@@ -204,7 +225,6 @@ public class ScanningModeFragment extends Fragment {
     private WifiManager wifiManager;
     private void scanWifi(){
         //textView.setText(R.string.eeeee);
-        setupWifiScanning();
         Log.i("scanWifi", "Hello");
         getActivity().registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
@@ -381,9 +401,20 @@ public class ScanningModeFragment extends Fragment {
                 // Sequence for Getting Current Position:
                 // 1) Create new dataset holder in the activity
                 wifiKNN.insert(apData);
-                Log.d(TAG, "Wifi scanning complete, going to scan again");
-                wifiManager.startScan();
-
+                Log.d(TAG, "Wifi scanning complete");
+                if (requestedOngoingScanning) {
+                    Log.d(TAG, "Wifi scanning complete, going to scan again");
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 1000ms
+                            Log.d(TAG, "Wait for 100ms");
+                            scanWifi();
+                            Log.d(TAG, "Scan wifi again");
+                        }
+                    }, 100);
+                }
 
             }
             else {
@@ -403,6 +434,7 @@ public class ScanningModeFragment extends Fragment {
                     try {
                         int rssi = scanResult.level;
                         String rssiVal = String.valueOf(WifiManager.calculateSignalLevel(rssi, 101));
+                        apData.put(bssid, (double)rssi);
                         Log.d(TAG, "SSID: " + ssid + ", BSSID: " + bssid + ", RSSI: " + rssiVal);
 
                     } catch (Exception e) {
@@ -416,6 +448,12 @@ public class ScanningModeFragment extends Fragment {
 
                 Log.d(TAG, "Coordinates " + coord[0] + " : " + coord[1]);
                 ScanningModeFragment.this.mapView.setCurrentTPosition(new PointF(coord[0], coord[1]));
+                ScanningModeFragment.this.mapView.setCurrentTPosition_end(new PointF(coord[0], coord[1]));
+
+                wifiLocationProgressDialog.dismiss();
+
+
+
             }
 
         }
