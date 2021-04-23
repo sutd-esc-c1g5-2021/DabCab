@@ -77,8 +77,7 @@ public class WifiFragment extends Fragment {
 
     private void scanWifi(){
         screenList.clear();
-        //textView.setText(R.string.eeeee);
-        Log.i("scanWifi", "Hello");
+        Log.d("scanWifi", "scanWifi started");
         getActivity().registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
         Toast.makeText(getActivity(), "Scanning started",Toast.LENGTH_SHORT).show();
@@ -90,11 +89,10 @@ public class WifiFragment extends Fragment {
             List<ScanResult> results = wifiManager.getScanResults();
             // TODO: add handling for scanFailure();
             getActivity().unregisterReceiver(this);
-            Log.i("wifiReceiver", "onReceive");
+            Log.d("wifiReceiver", "onReceive");
 
             for (ScanResult scanResult: results){
-                Log.i("wifiReceiver", "results get");
-                //Map<String, String> datum = new HashMap<String, String>(2);
+                Log.d("wifiReceiver", "results get");
                 String ssid = scanResult.SSID;
                 String bssid = scanResult.BSSID;
                 int rssi = scanResult.level;
@@ -102,8 +100,6 @@ public class WifiFragment extends Fragment {
                 /* THIS USES A DEPRECATED VERSION OF CALCULATE SIGNAL LEVEL BUT NOT USING IT CAUSES CRASHES*/
 
                 screenList.add("SSID: " + ssid + ", BSSID: " + bssid + ", RSSI: " + rssiVal);
-                //datum.put("RSSI", rssiVal);
-                //textView.append("\nSSID: " + ssid + ", RSSI:" + rssiVal);
                 adapter.notifyDataSetChanged();
             }
 
@@ -154,19 +150,18 @@ public class WifiFragment extends Fragment {
         });
 
         listView = getActivity().findViewById(R.id.wifiList);
-        //textView = findViewById(R.id.wifiText);
         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         //warn user if Wifi is not on - other option: turn it on in the app
         if (!wifiManager.isWifiEnabled()){
             Toast.makeText(getActivity(), "Wifi currently disabled, please turn on Wifi.",Toast.LENGTH_LONG).show();
-            // apps cannot turn on/off wifi after certain api versions
+            // apps cannot turn on/off wifi after certain API versions
             // wifiManager.setWifiEnabled(true);
         }
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, screenList);
         listView.setAdapter(adapter);
-        scanWifi(); // you can turn this off if you don't want' the app to scan on startup
+        scanWifi(); // TODO: turn this off if you don't want the app to scan on startup
 
 
 
