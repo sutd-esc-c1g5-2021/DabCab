@@ -1,6 +1,5 @@
 package com.example.selflib.wifi_algo;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,23 +9,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 public class DataSet {
     private HashSet<String> allMACAddr = new HashSet<>();
     private ArrayList<RunData> mapData = new ArrayList<>();
     private HashMap<String,double[]> normalData = new HashMap<>();
     private List<String> normalMACAddr;
     private RunData activeRun;
-    private String floorplan;   //To store floorplan filename for saving and loading later
+    private String floorplan="floorplan";   //To store floorplan filename for saving and loading later
 
     //Start a new run
     public void startRun(int x,int y){
         System.out.println("\nRun Start Request Received\n");
-        if (this.activeRun!=null){
+        if (this.activeRun==null){
             this.activeRun = new RunData(x,y);
         }
         else{
-
+            System.out.println("DataSet Error: startRun with not null activeRun.");
         }
 
     }
@@ -35,35 +33,39 @@ public class DataSet {
     public void endRun(int x,int y){
         System.out.println("\nRun End Request Received\n");
         if(this.activeRun==null){
-            System.out.println("Error: Run has not started");
+            System.out.println("DataSet Error: endRun called with null activeRun");
         }
         else{
-            this.activeRun.end(x,y);
-            mapData.add(activeRun);
-            this.activeRun = null;
+            try{
+                this.activeRun.end(x,y);
+                mapData.add(activeRun);
+                this.activeRun = null;
+            }
+            catch (FaultyEndException e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
     //Insert new data while maintaining integrity
     public void insert(HashMap<String,Double> input){
-        allMACAddr.addAll(input.keySet());
-        int tempSize = input.size();
-        String[] addr = new String[tempSize];
-        double[] rssi = new double[tempSize];
-        int i = 0;
-        DecimalFormat df = new DecimalFormat("#.####");
-
-        for(Map.Entry me : input.entrySet()){
-            addr[i] = (String) me.getKey();
-            rssi[i] = (Double) me.getValue();
-            i++;
-        }
-
         if(this.activeRun!=null){
+            allMACAddr.addAll(input.keySet());
+            int tempSize = input.size();
+            String[] addr = new String[tempSize];
+            double[] rssi = new double[tempSize];
+            int i = 0;
+
+            for(Map.Entry me : input.entrySet()){
+                addr[i] = (String) me.getKey();
+                rssi[i] = (Double) me.getValue();
+                i++;
+            }
             activeRun.insert(addr,rssi);
         }
         else{
-            System.out.println("Error: No Mapping Runs are active");
+            System.out.println("DataSet Error: insert called with null activeRun");
         }
     }
 
