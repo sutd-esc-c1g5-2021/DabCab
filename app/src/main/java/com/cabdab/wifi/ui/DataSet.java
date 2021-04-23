@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.midi.SysexMessage;
-
 public class DataSet {
     private HashSet<String> allMACAddr = new HashSet<>();
     private ArrayList<RunData> mapData = new ArrayList<>();
