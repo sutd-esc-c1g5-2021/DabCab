@@ -31,14 +31,20 @@ public class RunData{
     }
 
     //End data and distribute Start to End Coordinates
-    public void end(int x, int y){
-        this.xEnd = x;
-        this.yEnd = y;
+    public void end(int x, int y) throws FaultyEndException{
         int interval = this.macAddr.size()-1;
-        for(int i = 0; i <= interval; i++){
-            int midX = (int) Math.round(this.xStart+i*(this.xEnd-this.xStart)/interval);
-            int midY = (int) Math.round(this.yStart+i*(this.yEnd-this.yStart)/interval);
-            this.xyCoord.add(midX+","+midY);
+        if (interval <= 0){
+            System.out.println("RunData Error: Insufficient data to end. Please insert more data.");
+            throw new FaultyEndException("RunData Failed to End.");
+        }
+        else {
+            this.xEnd = x;
+            this.yEnd = y;
+            for (int i = 0; i <= interval; i++) {
+                int midX = (int) Math.round(this.xStart + i * (this.xEnd - this.xStart) / interval);
+                int midY = (int) Math.round(this.yStart + i * (this.yEnd - this.yStart) / interval);
+                this.xyCoord.add(midX + "," + midY);
+            }
         }
     }
 
@@ -141,5 +147,11 @@ public class RunData{
 
     public int getyEnd() {
         return yEnd;
+    }
+}
+
+class FaultyEndException extends Exception{
+    public FaultyEndException(String s){
+        super(s);
     }
 }
