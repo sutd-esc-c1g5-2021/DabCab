@@ -26,7 +26,7 @@ public class DataSet {
             this.activeRun = new RunData(x,y);
         }
         else{
-
+            System.out.println("\nRun Already Started\n");
         }
 
     }

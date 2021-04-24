@@ -26,8 +26,8 @@ public class InterData implements Comparable{
 
     public void markInterval (float x, float y){
         //TODO: Change rounding to 1-2 decimal places.
-        this.x=round(x);
-        this.y=round(y);
+        this.x= (float) ((float)round(x*100.0)/100.0);
+        this.y= (float) ((float)round(y*100.0)/100.0);
         this.keyXY = this.x+","+this.y;
     }
 

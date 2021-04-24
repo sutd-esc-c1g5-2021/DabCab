@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 .idea/gradle.xml
+app/Test1.csv
+app/Test2.csv
+app/Test3.csv
+app/Test4.csv
