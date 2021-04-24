@@ -23,7 +23,7 @@ import com.cabdab.wifi.R;
 import java.util.List;
 import java.util.ArrayList;
 
-//import java.util.HashMap; for future ue
+//import java.util.HashMap; for future use
 //import android.widget.TextView;
 //import java.util.Map;
 
